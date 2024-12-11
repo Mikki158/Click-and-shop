@@ -1,11 +1,13 @@
 package com.example.auth.dto;
 
+import com.example.auth.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,6 +16,6 @@ import java.time.LocalDateTime;
 public class AuthCodeDto {
     private Integer auth_code;
     private String username;
-    private String role;
+    private Role role;
     private LocalDateTime expires_at;
 }

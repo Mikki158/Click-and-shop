@@ -8,7 +8,7 @@ public class UserMapper {
         return new UserDto(
                 user.getUsername(),
                 user.getFirstName(),
-                user.isGender()
+                user.getRole()
         );
     }
 
@@ -16,7 +16,7 @@ public class UserMapper {
         return new User(
                 userDto.getUsername(),
                 userDto.getFirstName(),
-                userDto.isGender()
+                userDto.getRole()
         );
     }
 }

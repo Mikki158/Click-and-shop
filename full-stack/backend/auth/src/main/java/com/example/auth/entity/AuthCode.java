@@ -1,15 +1,13 @@
 package com.example.auth.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,7 +22,7 @@ public class AuthCode {
     @Column(name = "username")
     private String username;
     @Column(name = "role")
-    private String role;
+    private Role role;
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 }
