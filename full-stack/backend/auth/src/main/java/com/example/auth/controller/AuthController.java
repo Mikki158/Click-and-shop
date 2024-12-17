@@ -2,7 +2,7 @@ package com.example.auth.controller;
 
 import com.example.auth.dto.AuthCodeDto;
 import com.example.auth.dto.AuthResponseDto;
-import com.example.auth.dto.SignUpRequest;
+import com.example.auth.dto.SignInRequest;
 import com.example.auth.dto.UserDto;
 import com.example.auth.exception.*;
 import com.example.auth.service.AuthenticationService;
@@ -17,15 +17,14 @@ import java.util.Map;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     private AuthenticationService authenticationService;
     private UserService userService;
 
     @GetMapping("/createAuthCode")
     public ResponseEntity<AuthCodeDto> createAuthCode(@RequestHeader Map<String, String> headers,
-                                                      @RequestParam("username") String username,
-                                                      @RequestParam("role") String role) {
+                                                      @RequestParam("username") String username) {
 
         if(!headers.containsKey("api_key") && !headers.get("api_key").equals("sicret_api_key"))
             throw new ErrorDefinitionException("r0002", ErrorType.AUTHORIZATION, Map.of());
@@ -35,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/checkauthcode")
-    public ResponseEntity<AuthResponseDto> checkAuthCode(@RequestBody @Valid SignUpRequest request) {
+    public ResponseEntity<AuthResponseDto> checkAuthCode(@RequestBody @Valid SignInRequest request) {
         AuthResponseDto authResponseDto = authenticationService.checkAuthCode(request);
         return ResponseEntity.ok(authResponseDto);
     }

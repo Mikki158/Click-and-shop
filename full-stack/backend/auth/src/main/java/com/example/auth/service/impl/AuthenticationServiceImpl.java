@@ -2,7 +2,7 @@ package com.example.auth.service.impl;
 
 import com.example.auth.dto.AuthCodeDto;
 import com.example.auth.dto.AuthResponseDto;
-import com.example.auth.dto.SignUpRequest;
+import com.example.auth.dto.SignInRequest;
 import com.example.auth.entity.AuthCode;
 import com.example.auth.entity.User;
 import com.example.auth.exception.ErrorDefinitionException;
@@ -13,7 +13,6 @@ import com.example.auth.repository.UserRepository;
 import com.example.auth.service.AuthenticationService;
 import com.example.auth.service.JwtService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthResponseDto checkAuthCode(SignUpRequest request) {
+    public AuthResponseDto checkAuthCode(SignInRequest request) {
 
         if(authenticationRepository.findById(request.getAuthCode()).isEmpty())
             throw new ErrorDefinitionException("r0003", ErrorType.INPUT_REQUEST, Map.of(
