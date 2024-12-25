@@ -3,6 +3,8 @@ package com.example.product.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,11 +17,13 @@ public class Product extends AbstractEntity{
     private Long price;
     private String description;
     private Category category;
+    private List<Image> imagePaths;
 
-    public Product(String name, Long price, String description) {
+    public Product(String name, Long price, String description, List<Image> imagePaths) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.imagePaths = imagePaths;
     }
 
     @Column(name = "name")
@@ -41,5 +45,10 @@ public class Product extends AbstractEntity{
     @JoinColumn(name = "category_id", nullable = false)
     public Category getCategory() {
         return category;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
+    public List<Image> getImagePaths() {
+        return imagePaths;
     }
 }

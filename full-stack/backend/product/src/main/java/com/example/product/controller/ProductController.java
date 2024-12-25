@@ -7,8 +7,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileReader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.List;
+import java.util.Random;
 
 @AllArgsConstructor
 @RestController
@@ -36,5 +43,12 @@ public class ProductController {
 
         List<ProductDto> response = productService.getAllProducts();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @PostMapping("/addPhoto")
+    public ResponseEntity<String> addPhoto(@RequestParam("file") MultipartFile image) {
+
+        String response = productService.addImage(image);
+        return ResponseEntity.ok(response);
     }
 }
