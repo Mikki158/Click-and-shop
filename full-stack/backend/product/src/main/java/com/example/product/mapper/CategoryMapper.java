@@ -39,7 +39,7 @@ public class CategoryMapper extends AbstractMapper<Category, CategoryDto>{
     }
 
     private Long getId(Category source) {
-        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getParentCategory().getId();
+        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : (Objects.isNull(source.getParentCategory())? null : source.getParentCategory().getId());
     }
 
     @Override

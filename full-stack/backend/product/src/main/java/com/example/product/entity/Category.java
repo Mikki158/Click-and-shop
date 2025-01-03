@@ -12,6 +12,8 @@ import lombok.*;
 public class Category extends AbstractEntity{
 
     private String name;
+    private String base;
+    private Long imageId;
     private Category parentCategory;
 
     @Column(name = "name")
@@ -19,8 +21,18 @@ public class Category extends AbstractEntity{
         return name;
     }
 
+    @Column(name = "base")
+    public String getBase() {
+        return base;
+    }
+
+    @Column(name = "image_id")
+    public Long getImageId() {
+        return imageId;
+    }
+
     @ManyToOne
-    @JoinColumn(name = "parent_category_id")
+    @JoinColumn(name = "parent_category_id", nullable = true)
     public Category getParentCategory() {
         return parentCategory;
     }

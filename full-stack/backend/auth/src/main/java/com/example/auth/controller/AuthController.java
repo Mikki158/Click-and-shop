@@ -22,6 +22,15 @@ public class AuthController {
     private AuthenticationService authenticationService;
     private UserService userService;
 
+    @GetMapping("{id}")
+    public ResponseEntity<String> test(@PathVariable("id") Long id) {
+
+        if (id == 1)
+            throw new ErrorDefinitionException("r0001", ErrorType.CONTROLLER, Map.of());
+
+        return new ResponseEntity<>("Hello", HttpStatus.OK);
+    }
+
     @GetMapping("/createAuthCode")
     public ResponseEntity<AuthCodeDto> createAuthCode(@RequestHeader Map<String, String> headers,
                                                       @RequestParam("username") String username) {

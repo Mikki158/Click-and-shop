@@ -1,19 +1,18 @@
 package com.example.product.service;
 
-import com.example.product.dto.CreateProductRequest;
 import com.example.product.dto.ProductDto;
+import com.example.product.entity.Image;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductService {
 
-    public ProductDto createProduct(ProductDto request);
+    public ProductDto createProduct();
+
+    public ProductDto updateProduct(Long productId, String name, Long regularPrice, Long discountedPrice, String description, Long categoryId);
 
     public ProductDto getProduct(Long productId);
 
     public List<ProductDto> getAllProducts();
-
-    public String addImage(MultipartFile image);
 }

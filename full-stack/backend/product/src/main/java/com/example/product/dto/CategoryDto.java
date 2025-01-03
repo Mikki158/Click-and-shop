@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class CategoryDto extends AbstractDto{
 
     private String name;
+    private String base;
+    private Long imageId;
     private Long parentCategoryId;
 }

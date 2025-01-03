@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/caregory")
@@ -25,5 +27,10 @@ public class CategoryController {
     @GetMapping("{id}")
     public ResponseEntity<String> getFullCategory(@PathVariable("id") Long categoryId){
         return new ResponseEntity<>(categoryService.getFullCategory(categoryRepository.getReferenceById(categoryId)), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<CategoryDto>> getAllCategory(){
+        return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
     }
 }

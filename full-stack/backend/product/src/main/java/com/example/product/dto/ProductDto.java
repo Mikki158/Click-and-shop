@@ -11,8 +11,9 @@ import java.util.List;
 public class ProductDto extends AbstractDto{
 
     private String name;
-    private Long price;
+    private Long regularPrice;
+    private Long discountedPrice;
     private String description;
     private Long categoryId;
-    private List<ImageDto> imagePaths;
+    private List<String> imagePaths;
 }

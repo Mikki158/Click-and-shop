@@ -1,21 +1,15 @@
 package com.example.product.controller;
 
 import com.example.product.dto.ProductDto;
+import com.example.product.entity.Image;
 import com.example.product.service.ProductService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileReader;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
 import java.util.List;
-import java.util.Random;
 
 @AllArgsConstructor
 @RestController
@@ -23,11 +17,23 @@ import java.util.Random;
 public class ProductController {
 
     ProductService productService;
+    private final String rootDir = "D:\\uploads\\";
 
     @PostMapping("/createProduct")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid ProductDto request) {
+    public ResponseEntity<ProductDto> createProduct() {
+        return new ResponseEntity<>(productService.createProduct(), HttpStatus.CREATED);
+    }
 
-        ProductDto response = productService.createProduct(request);
+    @PutMapping("/updateProduct")
+    public ResponseEntity<ProductDto> updateProduct(
+            @RequestParam("id") Long id,
+            @RequestParam("name") String name,
+            @RequestParam("regularPrice") Long regulalPrice,
+            @RequestParam("discountedPrice") Long discountedPrice,
+            @RequestParam("description") String description,
+            @RequestParam("categoryId") Long categoryId) {
+
+        ProductDto response = productService.updateProduct(id, name, regulalPrice, discountedPrice, description, categoryId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -43,12 +49,5 @@ public class ProductController {
 
         List<ProductDto> response = productService.getAllProducts();
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    
-    @PostMapping("/addPhoto")
-    public ResponseEntity<String> addPhoto(@RequestParam("file") MultipartFile image) {
-
-        String response = productService.addImage(image);
-        return ResponseEntity.ok(response);
     }
 }

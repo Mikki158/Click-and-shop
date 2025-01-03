@@ -40,7 +40,7 @@ public class ProductMapper extends AbstractMapper<Product, ProductDto>{
     }
 
     private Long getId(Product source) {
-        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getCategory().getId();
+        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : (Objects.isNull(source.getCategory()) ? null : source.getCategory().getId());
     }
 
     @Override

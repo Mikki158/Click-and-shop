@@ -8,20 +8,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name = "products")
 public class Product extends AbstractEntity{
 
     private String name;
-    private Long price;
+    private Long regularPrice;
+    private Long discountedPrice;
     private String description;
     private Category category;
-    private List<Image> imagePaths;
+    private List<String> imagePaths;
 
-    public Product(String name, Long price, String description, List<Image> imagePaths) {
+    public Product(String name, Long regularPrice, Long discountedPrice, String description, List<String> imagePaths) {
         this.name = name;
-        this.price = price;
+        this.regularPrice = regularPrice;
+        this.discountedPrice = discountedPrice;
         this.description = description;
         this.imagePaths = imagePaths;
     }
@@ -31,9 +32,14 @@ public class Product extends AbstractEntity{
         return name;
     }
 
-    @Column(name = "price")
-    public Long getPrice() {
-        return price;
+    @Column(name = "regular_price")
+    public Long getRegularPrice() {
+        return regularPrice;
+    }
+
+    @Column(name = "discounted_price")
+    public Long getDiscountedPrice() {
+        return discountedPrice;
     }
 
     @Column(name = "description")
@@ -42,13 +48,8 @@ public class Product extends AbstractEntity{
     }
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = true)
     public Category getCategory() {
         return category;
-    }
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
-    public List<Image> getImagePaths() {
-        return imagePaths;
     }
 }
