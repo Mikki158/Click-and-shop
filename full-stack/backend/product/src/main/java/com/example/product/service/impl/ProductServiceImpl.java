@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.getReferenceById(productId);
         List<String> images = new ArrayList<>();
 
-        String url = "http://localhost:8082/api/files/product/" + productId.toString();
+        String url = "http://83.147.254.92:8082/api/files/product/" + productId.toString();
         String result = restTemplate.getForObject(url, String.class);
 
         try {
@@ -115,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (Product element: products) {
 
-            String url = "http://localhost:8082/api/files/product/" + element.getId().toString();
+            String url = "http://83.147.254.92:8082/api/files/product/" + element.getId().toString();
             String result = restTemplate.getForObject(url, String.class);
             List<String> images = new ArrayList<>();
 

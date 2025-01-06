@@ -23,7 +23,7 @@ import java.util.List;
 public class FileController {
 
     ImageSercice imageSercice;
-    private final String uploadDir = "D:/uploads"; // Корневая папка
+    private final String uploadDir = "/var/uploads/"; // Корневая папка
 
     @PostMapping("/addPhoto")
     public ResponseEntity<String> addImage(

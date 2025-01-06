@@ -31,7 +31,7 @@ import java.util.Random;
 @AllArgsConstructor
 public class ImageServiceImpl implements ImageSercice {
 
-    private final String rootDir = "D:\\uploads\\";
+    private final String rootDir = "/var/uploads/";
     private final ImageRepository imageRepository;
     private final RestTemplate restTemplate;
 
@@ -41,8 +41,8 @@ public class ImageServiceImpl implements ImageSercice {
     public String addImage(MultipartFile image, Long productId) {
         try {
 
-            String url = "http://localhost:8081/api/product/" + productId;
-            String result = restTemplate.getForObject(url, String.class);
+            //String url = "http://localhost:8081/api/product/" + productId;
+            //String result = restTemplate.getForObject(url, String.class);
 
             String tempPath = image.getOriginalFilename() + System.currentTimeMillis();
             String fileName = md5Hash(tempPath) + ".jpg";
@@ -54,17 +54,17 @@ public class ImageServiceImpl implements ImageSercice {
             if(!directory.exists())
                 directory.mkdirs();
 
-            File destinationFile = new File(uploadPath + "\\" + fileName);
+            File destinationFile = new File(uploadPath + "/" + fileName);
 
             image.transferTo(destinationFile);
 
             Image saveImage = new Image();
             saveImage.setProductId(productId);
-            saveImage.setFilePath(uploadPath + "\\" + fileName);
+            saveImage.setFilePath(uploadPath + "/" + fileName);
             imageRepository.save(saveImage);
 
             //return saveImage;
-            return "Файл сохранён по пути: " + dir + "\\" + fileName;
+            return "Файл сохранён по пути: " + dir + "/" + fileName;
         } catch (Exception e) {
             throw new ErrorDefinitionException("r0200", ErrorType.INPUT_REQUEST, Map.of("message", e.getMessage()));
         }
@@ -85,7 +85,7 @@ public class ImageServiceImpl implements ImageSercice {
         Random random = new Random(Instant.now().toEpochMilli());
         String dir1 = Integer.toHexString(random.nextInt(256));
         String dir2 = Integer.toHexString(random.nextInt(256));
-        return dir1 + "\\" + dir2;
+        return dir1 + "/" + dir2;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ImageServiceImpl implements ImageSercice {
 
         for(Image image : imageList) {
             String filePath = image.getFilePath();
-            String relativePath = filePath.substring("D:\\uploads\\".length());
+            String relativePath = filePath.substring("/var/uploads/".length());
             urlList.add("http://localhost:8082/api/files/" + relativePath.replace('\\', '/'));
         }
 

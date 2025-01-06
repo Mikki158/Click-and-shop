@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  app:
+    container_name: product-container
+    build:
+      context: .
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/product_service
+      SPRING_DATASOURCE_USERNAME: misha
+      SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: product-postgres-container
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: product_service
+      POSTGRES_USER: misha
+      POSTGRES_PASSWORD: 123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

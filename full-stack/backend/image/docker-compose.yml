@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  app:
+    container_name: image-container
+    build:
+      context: .
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/file_service
+      SPRING_DATASOURCE_USERNAME: misha
+      SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+      - db
+    volumes:
+      - /var/uploads:/var/uploads
+
+  db:
+    image: postgres:15
+    container_name: image-postgres-container
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: file_service
+      POSTGRES_USER: misha
+      POSTGRES_PASSWORD: 123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
