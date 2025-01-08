@@ -1,4 +1,11 @@
 version: '3.8'
+networks:
+  my_network:
+    name: backend
+    external: true
+  bd_network:
+    driver: bridge
+
 services:
   app:
     container_name: image-container
@@ -14,6 +21,9 @@ services:
       - db
     volumes:
       - /var/uploads:/var/uploads
+    networks:
+      - my_network
+      - bd_network
 
   db:
     image: postgres:15
@@ -26,6 +36,8 @@ services:
       POSTGRES_PASSWORD: 123
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bd_network
 
 volumes:
   postgres_data:

@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  nginx:
+    image: nginx:stable
+    container_name: nginx-container
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /root/Click-and-shop/full-stack/backend/nginx:/etc/nginx
+      - /root/Click-and-shop/full-stack/backend/nginxlogs:/log
+      - /etc/letsencrypt/live/click-and-shop.ru:/etc/letsencrypt/live/click-and-shop.ru:ro
+      - /etc/letsencrypt/archive/click-and-shop.ru:/etc/letsencrypt/archive/click-and-shop.ru:ro
+      - /etc/letsencrypt/keys:/etc/letsencrypt/keys:ro
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    name: backend
+    external: true

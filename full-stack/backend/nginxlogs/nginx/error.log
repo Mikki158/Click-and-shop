@@ -1,0 +1,65 @@
+
+2025/01/08 20:42:04 [error] 20#20: *58 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.134.215, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 20:47:21 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/01/08 20:47:21 [notice] 20#20: gracefully shutting down
+2025/01/08 20:47:21 [notice] 20#20: exiting
+2025/01/08 20:47:21 [notice] 20#20: exit
+2025/01/08 20:47:21 [notice] 1#1: signal 17 (SIGCHLD) received from 20
+2025/01/08 20:47:21 [notice] 1#1: worker process 20 exited with code 0
+2025/01/08 20:47:21 [notice] 1#1: exit
+2025/01/08 20:48:40 [notice] 1#1: using the "epoll" event method
+2025/01/08 20:48:40 [notice] 1#1: nginx/1.26.2
+2025/01/08 20:48:40 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2025/01/08 20:48:40 [notice] 1#1: OS: Linux 5.15.0-124-generic
+2025/01/08 20:48:40 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/01/08 20:48:40 [notice] 1#1: start worker processes
+2025/01/08 20:48:40 [notice] 1#1: start worker process 20
+2025/01/08 20:49:30 [error] 20#20: *1 SSL_do_handshake() failed (SSL: error:0A00010B:SSL routines::wrong version number) while SSL handshaking to upstream, client: 85.140.119.236, server: click-and-shop.ru, request: "GET /api/category/1 HTTP/1.1", upstream: "https://172.27.0.3:8081/api/category/1", host: "click-and-shop.ru"
+2025/01/08 20:49:41 [error] 20#20: *3 SSL_do_handshake() failed (SSL: error:0A00010B:SSL routines::wrong version number) while SSL handshaking to upstream, client: 85.140.119.236, server: click-and-shop.ru, request: "GET /api/category/1 HTTP/1.1", upstream: "https://172.27.0.3:8081/api/category/1", host: "click-and-shop.ru"
+2025/01/08 20:49:47 [error] 20#20: *5 SSL_do_handshake() failed (SSL: error:0A00010B:SSL routines::wrong version number) while SSL handshaking to upstream, client: 85.140.119.236, server: click-and-shop.ru, request: "POST /api/product/createProduct HTTP/1.1", upstream: "https://172.27.0.3:8081/api/product/createProduct", host: "click-and-shop.ru"
+2025/01/08 20:54:32 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/01/08 20:54:32 [notice] 20#20: gracefully shutting down
+2025/01/08 20:54:32 [notice] 20#20: exiting
+2025/01/08 20:54:32 [notice] 20#20: exit
+2025/01/08 20:54:32 [notice] 1#1: signal 17 (SIGCHLD) received from 20
+2025/01/08 20:54:32 [notice] 1#1: worker process 20 exited with code 0
+2025/01/08 20:54:32 [notice] 1#1: exit
+2025/01/08 20:54:40 [notice] 1#1: using the "epoll" event method
+2025/01/08 20:54:40 [notice] 1#1: nginx/1.26.2
+2025/01/08 20:54:40 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2025/01/08 20:54:40 [notice] 1#1: OS: Linux 5.15.0-124-generic
+2025/01/08 20:54:40 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/01/08 20:54:40 [notice] 1#1: start worker processes
+2025/01/08 20:54:40 [notice] 1#1: start worker process 20
+2025/01/08 20:58:31 [error] 20#20: *6 open() "/etc/nginx/html/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.134.187, server: click-and-shop.ru, request: "GET /wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 20:58:49 [error] 20#20: *8 open() "/etc/nginx/html/wp-admin/setup-config.php" failed (2: No such file or directory), client: 172.69.136.151, server: click-and-shop.ru, request: "GET /wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 20:59:50 [error] 20#20: *9 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.134.186, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:00:14 [error] 20#20: *11 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 172.69.136.175, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:07:27 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/01/08 21:07:27 [notice] 20#20: gracefully shutting down
+2025/01/08 21:07:27 [notice] 20#20: exiting
+2025/01/08 21:07:27 [notice] 20#20: exit
+2025/01/08 21:07:27 [notice] 1#1: signal 17 (SIGCHLD) received from 20
+2025/01/08 21:07:27 [notice] 1#1: worker process 20 exited with code 0
+2025/01/08 21:07:27 [notice] 1#1: exit
+2025/01/08 21:10:07 [notice] 1#1: using the "epoll" event method
+2025/01/08 21:10:07 [notice] 1#1: nginx/1.26.2
+2025/01/08 21:10:07 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2025/01/08 21:10:07 [notice] 1#1: OS: Linux 5.15.0-124-generic
+2025/01/08 21:10:07 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/01/08 21:10:07 [notice] 1#1: start worker processes
+2025/01/08 21:10:07 [notice] 1#1: start worker process 20
+2025/01/08 21:11:04 [warn] 20#20: *11 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 85.140.119.236, server: click-and-shop.ru, request: "POST /api/files/addPhoto HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:15:57 [error] 20#20: *27 open() "/etc/nginx/html/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.103.14, server: click-and-shop.ru, request: "GET /wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:16:41 [error] 20#20: *28 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.172.225, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:16:47 [error] 20#20: *30 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 172.71.122.34, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:16:58 [error] 20#20: *32 open() "/etc/nginx/html/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.94.88, server: click-and-shop.ru, request: "GET /wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:19:16 [error] 20#20: *33 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 198.145.170.213, server: click-and-shop.ru, request: "GET / HTTP/1.1", host: "www.click-and-shop.ru"
+2025/01/08 21:19:28 [error] 20#20: *34 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 147.45.185.25, server: click-and-shop.ru, request: "GET / HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:19:28 [error] 20#20: *34 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 147.45.185.25, server: click-and-shop.ru, request: "GET / HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:35:08 [error] 20#20: *45 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 172.69.151.237, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:35:29 [error] 20#20: *46 open() "/etc/nginx/html/wp-admin/setup-config.php" failed (2: No such file or directory), client: 172.71.148.133, server: click-and-shop.ru, request: "GET /wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:35:53 [error] 20#20: *48 open() "/etc/nginx/html/wordpress/wp-admin/setup-config.php" failed (2: No such file or directory), client: 172.71.131.211, server: click-and-shop.ru, request: "GET /wordpress/wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:36:10 [error] 20#20: *50 open() "/etc/nginx/html/wp-admin/setup-config.php" failed (2: No such file or directory), client: 162.158.103.14, server: click-and-shop.ru, request: "GET /wp-admin/setup-config.php HTTP/1.1", host: "click-and-shop.ru"
+2025/01/08 21:41:25 [error] 20#20: *58 open() "/etc/nginx/html/actuator/gateway/routes" failed (2: No such file or directory), client: 92.255.57.58, server: click-and-shop.ru, request: "GET /actuator/gateway/routes HTTP/1.1", host: "83.147.254.92", referrer: "http://83.147.254.92:80/actuator/gateway/routes"
+2025/01/08 21:42:54 [warn] 20#20: *61 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000002, client: 85.140.119.236, server: click-and-shop.ru, request: "POST /api/files/addPhoto HTTP/1.1", host: "click-and-shop.ru"

@@ -1,0 +1,18 @@
+version: '3.9'
+
+networks:
+  my_network: # Создаем пользовательскую сеть
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:stable
+    container_name: nginx-container
+    ports:
+      - "80:80"
+    volumes:
+      - /root/Click-and-shop/full-stack/backend/nginx:/etc/nginx
+      - /home/db/log:/log/home/db/log:/log
+    networks:
+      - my_network
+

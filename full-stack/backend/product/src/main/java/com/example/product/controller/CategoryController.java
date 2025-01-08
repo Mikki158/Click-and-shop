@@ -13,7 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/caregory")
+@RequestMapping("/api/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -24,7 +24,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.createCategory(request), HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<String> getFullCategory(@PathVariable("id") Long categoryId){
         return new ResponseEntity<>(categoryService.getFullCategory(categoryRepository.getReferenceById(categoryId)), HttpStatus.OK);
     }

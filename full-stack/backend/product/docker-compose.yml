@@ -1,4 +1,12 @@
 version: '3.8'
+
+networks:
+  bd_network:
+    driver: bridge
+  my_network:
+    name: backend
+    external: true
+
 services:
   app:
     container_name: product-container
@@ -12,6 +20,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: 123
     depends_on:
       - db
+    networks:
+      - bd_network
+      - my_network
 
   db:
     image: postgres:15
@@ -24,6 +35,8 @@ services:
       POSTGRES_PASSWORD: 123
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bd_network
 
 volumes:
   postgres_data:
