@@ -96,7 +96,7 @@ public class ImageServiceImpl implements ImageSercice {
         for(Image image : imageList) {
             String filePath = image.getFilePath();
             String relativePath = filePath.substring("/var/uploads/".length());
-            urlList.add("http://localhost:8082/api/files/" + relativePath.replace('\\', '/'));
+            urlList.add("https://click-and-shop.ru/api/files/" + relativePath.replace('\\', '/'));
         }
 
         return urlList;

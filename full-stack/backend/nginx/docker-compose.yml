@@ -14,9 +14,14 @@ services:
       - /etc/letsencrypt/archive/click-and-shop.ru:/etc/letsencrypt/archive/click-and-shop.ru:ro
       - /etc/letsencrypt/keys:/etc/letsencrypt/keys:ro
     networks:
-      - my_network
+      - my_backend
+      - my_frontend
 
 networks:
-  my_network:
+  my_backend:
     name: backend
+    external: true
+
+  my_frontend:
+    name: frontend
     external: true

@@ -1,11 +1,9 @@
-import React from 'react'
 import { twMerge } from 'tailwind-merge';
 import { ProductProps } from '../../type';
 
 const AddToCartBtn = ({
   className, 
-  title,
-  product
+  title
 }:{
   className?:string;
   title?:string;

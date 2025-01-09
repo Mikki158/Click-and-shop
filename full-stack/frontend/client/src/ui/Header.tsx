@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     Menu,
     MenuButton,
@@ -32,7 +32,7 @@ const Header = () => {
 
     useEffect(() => {
         const fetchData = async() => {
-            const endpoint = `${config?.baseUrl}/api/caregory`;
+            const endpoint = `${config?.baseUrl}/api/category`;
 
             try {
 

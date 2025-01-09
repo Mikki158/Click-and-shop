@@ -14,7 +14,7 @@ const checkConfig = (server:string):Config | {} => {
 
         case "local":
             config = {
-                baseUrl: "http://localhost:8081"
+                baseUrl: "https://click-and-shop.ru"
             };
             break;
     

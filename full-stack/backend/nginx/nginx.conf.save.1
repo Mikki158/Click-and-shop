@@ -45,18 +45,6 @@ http {
 		ssl_certificate /etc/letsencrypt/live/click-and-shop.ru/fullchain.pem;
 		ssl_certificate_key /etc/letsencrypt/live/click-and-shop.ru/privkey.pem;
 
-		root /usr/share/nginx/html;
-		index index.html;
-
-		location / {
-			proxy_pass http://react-container:5173; # Замените порт на тот, который используется вашим фронтендом
-			proxy_http_version 1.1;
-			proxy_set_header Upgrade $http_upgrade;
-			proxy_set_header Connection 'upgrade';
-			proxy_set_header Host $host;
-			proxy_cache_bypass $http_upgrade;
-		}
-	
 		location = /api/product/createProduct {
 			proxy_pass http://product-container:8081; # порт приложения внутри контейнера
 			proxy_set_header Host $host;
@@ -121,7 +109,7 @@ http {
                         proxy_set_header X-Forwarded-Proto $scheme;
                 }
 
-		location /api/files/ {
+		location /api/files/\d+/\d+/[a-f0-9]{32}\.jpg$ {
                         proxy_pass http://image-container:8082; # порт приложения внутри контейнера
                         proxy_set_header Host $host;
                         proxy_set_header X-Real-IP $remote_addr;

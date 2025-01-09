@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaRegEye, FaRegStar } from 'react-icons/fa'
 import { LuArrowLeftRight } from 'react-icons/lu'
 

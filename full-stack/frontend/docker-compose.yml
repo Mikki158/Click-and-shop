@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  react-app:
+    container_name: react-container
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    networks:
+      - my_frontend
+
+networks:
+  my_frontend:
+    name: frontend
+    external: true
