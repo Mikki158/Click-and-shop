@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import { config } from '../../config'
 import { getData } from '../lib/index'
 import { CategoryProps } from '../../type'
+import TelegramLogin from './TelegramLogin'
 
 const bottomNavigation = [
     { title: "Home", link: "/" },
@@ -25,10 +26,15 @@ const bottomNavigation = [
     { title: "Blog", link: "/blog" },
 ]
 
+const botUsername = 'clickandshop_bot'; // Замените на имя вашего бота
+const authUrl = 'https://click-and-shop.ru/login'; // URL для обработки авторизации
+
 const Header = () => {
 
     const [searchText, setSearchText] = useState("");
     const [categories, setCategories] = useState([]);
+
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async() => {
@@ -47,6 +53,15 @@ const Header = () => {
         };
 
         fetchData();
+
+        const token = sessionStorage.getItem('accessToken');
+
+	if (token) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
+
     }, [])
 
   return (
@@ -87,32 +102,36 @@ const Header = () => {
             </div>
 
             {/* MenuBar */}
-            <div className='flex items-center gap-x-6 text-2xl'>
-                <Link to={"/profile"}>
-                    <FiUser className='hover:text-skyText duration-200
-                    cursor-pointer'/>
-                </Link>
-                <Link to={"/favorite"} className='relative block'>
-                    <FiStar className='hover:text-skyText duration-200
-                    cursor-pointer'/>
-                    <span className='inline-flex
-                    items-center justify-center bg-redText
-                    text-whileText absolute -top-1
-                    -right-2 text-[9px] rounded-full w-4 h-4'>
-                        0
-                    </span>
-                </Link>
-                <Link to={"/cart"} className='relative block'>
-                    <FiShoppingBag className='hover:text-skyText duration-200
-                    cursor-pointer'/>
-                    <span className='inline-flex
-                    items-center justify-center bg-redText
-                    text-whileText absolute -top-1
-                    -right-2 text-[9px] rounded-full w-4 h-4'>
-                        0
-                    </span>
-                </Link>
-            </div>
+            {isAuthenticated ? (
+                <div className='flex items-center gap-x-6 text-2xl'>
+                    <Link to={"/profile"}>
+                        <FiUser className='hover:text-skyText duration-200
+                        cursor-pointer'/>
+                    </Link>
+                    <Link to={"/favorite"} className='relative block'>
+                        <FiStar className='hover:text-skyText duration-200
+                        cursor-pointer'/>
+                        <span className='inline-flex
+                        items-center justify-center bg-redText
+                        text-whileText absolute -top-1
+                        -right-2 text-[9px] rounded-full w-4 h-4'>
+                            0
+                        </span>
+                    </Link>
+                    <Link to={"/cart"} className='relative block'>
+                        <FiShoppingBag className='hover:text-skyText duration-200
+                        cursor-pointer'/>
+                        <span className='inline-flex
+                        items-center justify-center bg-redText
+                        text-whileText absolute -top-1
+                        -right-2 text-[9px] rounded-full w-4 h-4'>
+                            0
+                        </span>
+                    </Link>
+                </div>
+            ) : (
+                <TelegramLogin botUsername={botUsername} authUrl={authUrl} size="large" />
+            )}
         </div>
         <div className='w-full bg-darkText text-whiteText'>
             <Container className='py-2 max-w-4xl flex
@@ -170,3 +189,4 @@ const Header = () => {
 }
 
 export default Header
+

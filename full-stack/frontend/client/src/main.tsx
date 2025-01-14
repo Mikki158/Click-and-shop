@@ -12,6 +12,7 @@ import Orders from './pages/Orders.tsx'
 import Success from './pages/Success.tsx'
 import Cancel from './pages/Cancel.tsx'
 import NotFound from './pages/NotFound.tsx'
+import Login from './pages/Login.tsx'
 
 const RouterLayout = () => {
   return (
@@ -46,6 +47,10 @@ const router = createBrowserRouter([{
       element:<Category />,
     },
     {
+      path:'/login',
+      element:<Login/>
+    },
+    {
       path:'/profile',
       element:<Profile />,
     },
@@ -60,6 +65,10 @@ const router = createBrowserRouter([{
     {
       path:'/orders',
       element:<Orders />,
+    },
+    {
+      path:'/widgets/login',
+      element:<Login />,
     },
     {
       path:'/success',
