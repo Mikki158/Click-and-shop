@@ -15,5 +15,6 @@ public class ProductDto extends AbstractDto{
     private Long discountedPrice;
     private String description;
     private Long categoryId;
-    private List<String> imagePaths;
+    private Long brandId;
+	private List<String> imagePaths;
 }

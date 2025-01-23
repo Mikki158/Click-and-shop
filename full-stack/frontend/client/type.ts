@@ -12,5 +12,6 @@ export interface ProductProps {
   discountedPrice: number;
   description: string;
   categoryId: string;
+  brandId: string;
   imagePaths: [string];
 }

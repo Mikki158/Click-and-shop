@@ -19,6 +19,7 @@ const ProductCard = ({item}: Props) => {
     <div className='border border-gray-200 rounded-lg p-1 overflow-hidden hover:border-black duration-200 cursor-pointer'>
         <div className='w-full h-60 relative p-2 group'>
             <img 
+                onClick={handleProduct}
                 src={item?.imagePaths[0]} 
                 alt='productImage' 
                 className='w-full h-full rounded-md object-cover group-hover:scale-100 duration-300'

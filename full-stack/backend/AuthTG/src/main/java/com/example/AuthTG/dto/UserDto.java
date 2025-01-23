@@ -5,14 +5,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto{
 
-    private String firstName;
+    private Long userId;
     private String username;
+    private String firstName;
     private String photoUrl;
-    private String role;
+    private Set<String> role;
 }

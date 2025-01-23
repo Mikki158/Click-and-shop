@@ -7,72 +7,42 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User{
 
+    @Id
+    @Column(name = "id")
     private Long id;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "username")
     private String username;
+    @Column(name = "photo_url")
     private String photoUrl;
-    private String role;
 
-    public User(Long id, String firstName, String username, String photoUrl, String role) {
+    public User (Long id, String firstName, String lastName, String username, String photoUrl) {
         this.id = id;
         this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.photoUrl = photoUrl;
-        this.role = role;
     }
 
-    @Id
-    public Long getId() {
-        return id;
-    }
-
-    @Column(name = "created", updatable = false)
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    @Column(name = "updated", insertable = false)
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
-
-    @PrePersist
-    public void toCreate() {
-        setCreated(LocalDateTime.now());
-    }
-
-    @PreUpdate
-    public void toUpdate() {
-        setUpdated(LocalDateTime.now());
-    }
-
-    @Column(name = "first_name")
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Column(name = "username")
-    public String getUsername() {
-        return username;
-    }
-
-    @Column(name = "photo_url")
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    @Column(name = "role")
-    public String getRole() {
-        return role;
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles = new HashSet<Role>();
 }

@@ -13,4 +13,8 @@ public interface AuthService {
     User getUserById(Long userId);
 
     void saveUser(User user);
+
+    String addSeller(Long userId);
+
+    User auth(Map<String, String> data);
 }

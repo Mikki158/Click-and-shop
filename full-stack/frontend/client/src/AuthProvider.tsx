@@ -20,8 +20,10 @@ const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
                 const response = await axios.post('https://click-and-shop.ru/api/auth/update_tokens', {refreshToken,});
 
-                const { accessToken, newRefreshToken } = response.data
+                const { accessToken, newRefreshToken, nbf } = response.data
 
+                console.log(nbf)
+                sessionStorage.setItem('nbf', nbf);
                 sessionStorage.setItem('accessToken', accessToken);
                 document.cookie = `refreshToken=${newRefreshToken}; HttpOnly; Secure`
                 console.log('Access token успешно обновлён.', accessToken, refreshToken)

@@ -1,13 +1,12 @@
 package com.example.product.controller;
 
+import com.example.product.dto.BrandDto;
 import com.example.product.dto.ProductDto;
-import com.example.product.entity.Image;
 import com.example.product.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,15 +24,17 @@ public class ProductController {
     }
 
     @PutMapping("/updateProduct")
-    public ResponseEntity<ProductDto> updateProduct(
-            @RequestParam("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("regularPrice") Long regulalPrice,
-            @RequestParam("discountedPrice") Long discountedPrice,
-            @RequestParam("description") String description,
-            @RequestParam("categoryId") Long categoryId) {
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto request) {
 
-        ProductDto response = productService.updateProduct(id, name, regulalPrice, discountedPrice, description, categoryId);
+        ProductDto response = productService.updateProduct(
+                request.getId(),
+                request.getName(),
+                request.getRegularPrice(),
+                request.getDiscountedPrice(),
+                request.getDescription(),
+                request.getCategoryId(),
+                request.getBrandId());
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -48,6 +49,23 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getAllProduct() {
 
         List<ProductDto> response = productService.getAllProducts();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Long productId) {
+
+        return new ResponseEntity<>(productService.deleteProduct(productId), HttpStatus.OK);
+    }
+
+    @GetMapping("/seller")
+    public ResponseEntity<List<ProductDto>> getProductsFromSeller(
+            @RequestHeader("Authorization") String authHeader) {
+
+        List<BrandDto> brands = productService.getBrands(authHeader);
+
+        List<ProductDto> response = productService.getProductFromBrand(brands);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

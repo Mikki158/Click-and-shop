@@ -3,7 +3,9 @@ package com.example.AuthTG.service.impl;
 import com.example.AuthTG.dto.TokenType;
 import com.example.AuthTG.dto.TokensDto;
 import com.example.AuthTG.dto.UpdateTokensIn;
+import com.example.AuthTG.entity.Role;
 import com.example.AuthTG.entity.User;
+import com.example.AuthTG.repository.RoleRepository;
 import com.example.AuthTG.repository.TokenBlacklistRepository;
 import com.example.AuthTG.service.AuthService;
 import com.example.AuthTG.service.JwtService;
@@ -24,6 +26,7 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -67,6 +70,7 @@ public class JwtServiceImpl implements JwtService {
 
         Date currentTimestamp = new Date(System.currentTimeMillis());
         Date nextTimestamp = new Date(System.currentTimeMillis() + ttl);
+        String roles = subject.getRoles().stream().map(Role::getName).collect(Collectors.joining(", "));
 
         claims.put("iss", "Mikki@auth_service");
         claims.put("sub", subject.getId().toString());
@@ -75,6 +79,7 @@ public class JwtServiceImpl implements JwtService {
         claims.put("iat", currentTimestamp);
         claims.put("nbf", currentTimestamp);
         claims.put("exp", nextTimestamp);
+        claims.put("roles", roles);
 
         String token = Jwts.builder().subject(subject.getId().toString()).claims(claims).signWith(getSignKey())
                 .issuedAt(currentTimestamp).expiration(nextTimestamp)
@@ -138,7 +143,7 @@ public class JwtServiceImpl implements JwtService {
                     build().parseClaimsJws(token);
             claims = jwsClaims.getPayload();
         } catch (Exception e) {
-            throw new RuntimeException("Invalid or expired token");
+            throw new IllegalArgumentException("Invalid or expired token", e);
         }
 
         if (!"ACCESS".equals(claims.get("type"))) {
@@ -167,23 +172,7 @@ public class JwtServiceImpl implements JwtService {
         try {
             Map<String, String> data = checkTelegramAuthorization(map);
 
-            User user;
-
-            System.out.println("Логи3.");
-            System.out.println(map.get("id"));
-            System.out.println(Long.parseLong(data.get("id")));
-
-            if(!authService.findUserById(Long.parseLong(data.get("id")))) {
-                user = new User(Long.parseLong(data.get("id")), data.get("first_name"), data.get("username"),
-                        data.get("photo_url"), "Admin");
-
-                authService.saveUser(user);
-            }
-            else {
-                user = authService.getUserById(Long.parseLong(data.get("id")));
-            }
-
-            return issueTokensForUser(user);
+            return issueTokensForUser(authService.auth(data));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +186,7 @@ public class JwtServiceImpl implements JwtService {
         String accessToken = generateAccessToken(user, null);
         String refreshToken = generateRefreshToken(user, null);
 
-        return new TokensDto(accessToken, refreshToken);
+        return new TokensDto(accessToken, refreshToken, new Date(System.currentTimeMillis() + accessTokenTtl));
     }
 
     @Override
@@ -226,7 +215,12 @@ public class JwtServiceImpl implements JwtService {
 
         byte[] secretKey = sha256(botToken);
 
+        System.out.println("dataCheckString " + dataCheckString);
+        System.out.println("secretKey " + secretKey);
+
         String hash = hmacSha256(dataCheckString, secretKey);
+
+        System.out.println("hash " + hash);
 
         if (!hash.equals(checkHash)) {
             throw new Exception("Data is NOT from Telegram");

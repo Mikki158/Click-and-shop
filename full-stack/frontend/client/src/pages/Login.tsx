@@ -7,19 +7,34 @@ const Login = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
+
+    let last_name = searchParams.get('last_name')
+    let photo_url = searchParams.get('photo_url')
+
+    if (last_name == null)
+      last_name = "null";
+
+    if (photo_url == null)
+      photo_url = "null"
+
     const params = {
       id: searchParams.get('id'),
       first_name: searchParams.get('first_name'),
+      last_name: decodeURIComponent(last_name),
       username: searchParams.get('username'),
-      photo_url: decodeURIComponent(searchParams.get('photo_url')),
+      photo_url: decodeURIComponent(photo_url),
       auth_date: searchParams.get('auth_date'),
       hash: searchParams.get('hash'),
     };
 
+    console.log(params);
+
     axios
       .get('https://click-and-shop.ru/api/auth/TG_auth', {params})
       .then((response) => {
-        const { accessToken, refreshToken } = response.data;
+        const { accessToken, refreshToken, nbf } = response.data;
+
+        sessionStorage.setItem('nbf', nbf);
 
         sessionStorage.setItem('accessToken', accessToken);
         document.cookie = `refreshToken=${refreshToken}; Secure`

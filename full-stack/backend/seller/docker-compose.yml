@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+  bd_network:
+    driver: bridge
+  my_network:
+    name: backend
+    external: true
+
+services:
+  app:
+    container_name: seller-container
+    build:
+      context: .
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/seller_service
+      SPRING_DATASOURCE_USERNAME: misha
+      SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+      - db
+    networks:
+      - bd_network
+      - my_network
+
+  db:
+    image: postgres:15
+    container_name: seller-postgres-container
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_DB: seller_service
+      POSTGRES_USER: misha
+      POSTGRES_PASSWORD: 123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bd_network
+
+volumes:
+  postgres_data:
+

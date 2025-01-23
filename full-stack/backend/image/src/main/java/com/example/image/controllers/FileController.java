@@ -27,9 +27,16 @@ public class FileController {
 
     @PostMapping("/addPhoto")
     public ResponseEntity<String> addImage(
-            @RequestParam("file") MultipartFile image,
+            @RequestParam("files") List<MultipartFile> images,
             @RequestParam("productId") Long productId) {
-        return new ResponseEntity<>(imageSercice.addImage(image, productId), HttpStatus.OK);
+
+        String respone = "Файлы сохранены по пути: \n";
+
+        for (MultipartFile file : images) {
+            respone += imageSercice.addImage(file, productId) + "\n";
+        }
+
+        return new ResponseEntity<>(respone, HttpStatus.OK);
     }
 
     @GetMapping("/product/{id}")

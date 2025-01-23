@@ -1,40 +1,27 @@
 package com.example.AuthTG.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Setter
+@Getter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class AbstractEntity implements Serializable {
 
-    Long id;
-    LocalDateTime created;
-    LocalDateTime updated;
-
     @Id
     @GeneratedValue
-    public Long getId() {
-        return id;
-    }
-
+    @Column(name = "id")
+    Long id;
     @Column(name = "created", updatable = false)
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
+    LocalDateTime created;
     @Column(name = "updated", insertable = false)
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
+    LocalDateTime updated;
 
     @PrePersist
     public void toCreate() {

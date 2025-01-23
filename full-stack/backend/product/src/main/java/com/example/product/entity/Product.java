@@ -18,6 +18,7 @@ public class Product extends AbstractEntity{
     private String description;
     private Category category;
     private List<String> imagePaths;
+    private Long brandId;
 
     public Product(String name, Long regularPrice, Long discountedPrice, String description, List<String> imagePaths) {
         this.name = name;
@@ -51,5 +52,10 @@ public class Product extends AbstractEntity{
     @JoinColumn(name = "category_id", nullable = true)
     public Category getCategory() {
         return category;
+    }
+
+    @Column(name = "brandId")
+    public Long getBrandId() {
+        return brandId;
     }
 }

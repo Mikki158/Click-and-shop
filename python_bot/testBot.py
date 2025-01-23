@@ -80,7 +80,6 @@ if __name__ == '__main__':
     application.add_handler(caps_handler)
     application.add_handler(inline_caps_handler)
 
-
     # Релизные команды
     application.add_handler(CommandHandler('start', start))
     application.add_handler(CommandHandler('link', link))

@@ -10,6 +10,7 @@ import { PriceTag } from '../ui/PriceTag'
 import { MdOutlineStarOutline } from 'react-icons/md'
 import AddToCartBtn from '../ui/AddToCartBtn'
 import ProductCard from '../ui/ProductCard'
+import apiClient from '../apiClient'
 
 const Product = () => {
 
@@ -18,8 +19,9 @@ const Product = () => {
   const [loading, setLoading] = useState(false);
   const [imgUrl, setImgUrl] = useState("")
   const {id} = useParams();
+  const [fullCategory, setFullCategory] = useState("")
   
-  const endpoint = id 
+    const endpoint = id 
     ? `${config.baseUrl}/api/product/${id}` 
     : `${config.baseUrl}/api/product`
 
@@ -35,6 +37,10 @@ const Product = () => {
             setAllProducts(data);
             setProductData(null);            
           }
+
+          console.log(data)
+
+          document.title = data.name
           
         } catch (error) {
           console.error('Error fetching data', error);          
@@ -44,6 +50,16 @@ const Product = () => {
       };
 
       fetchData();
+
+      apiClient.get("/api/category", {
+        params: productData?.categoryId
+      })
+      .then((response) => {
+        setFullCategory(response.data)
+      })
+      .catch((error) => {
+        console.error("Ошибка при получени полной категории ", error);
+      })      
 
     }, [id, endpoint]);
 
@@ -78,6 +94,8 @@ const Product = () => {
                 </div>
               </div>
               <div className='flex flex-col gap-4'>
+                <label>{productData?.categoryId}</label>
+                <label>{productData?.brandId}</label>
                 <h2 className='text-3xl font-bold'>{productData?.name}</h2>
                 <div className='flex items-center justify-between'>
                   <PriceTag 
@@ -101,6 +119,7 @@ const Product = () => {
                     </p>
                   </div>
                 </div>
+                <text>{productData.description}</text>
                 <AddToCartBtn 
                   product={productData}
                   title='Buy now' 

@@ -1,0 +1,19 @@
+version: "3.9"
+
+networks:
+  my_network:
+    name: backend
+    external: true
+
+services:
+  bot:
+    build: .
+    container_name: telegram-bot
+    ports:
+      - "5000:5000"
+    environment:
+      - BOT_TOKEN=7879270677:AAF_BdUvUylE9XXY8MpTOk8lpiWZL3cMy24
+    restart: always
+    networks:
+      - my_network
+

@@ -4,52 +4,31 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "revoked_tokens")
 public class RevokedToken extends AbstractEntity{
 
+    @Column(name = "jti")
     private String jti;
+    @Column(name = "revorked_at")
     private LocalDateTime revokedAt;
+    @Column(name = "expirest_at")
     private LocalDateTime expirestAt;
+    @Column(name = "reason")
     private String reason;
+    @Column(name = "user_id")
     private Long userId;
+    @Column(name = "device_id")
     private String deviceId;
 
-    @Column(name = "jti")
-    public String getJti() {
-        return jti;
-    }
-
-    @Column(name = "revorked_at")
-    public LocalDateTime getRevokedAt() {
-        return revokedAt;
-    }
-
-    @Column(name = "expirest_at")
-    public LocalDateTime getExpirestAt() {
-        return expirestAt;
-    }
-
-    @Column(name = "reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @Column(name = "user_id")
-    public Long getUserId() {
-        return userId;
-    }
-
-    @Column(name = "device_id")
-    public String getDeviceId() {
-        return deviceId;
-    }
 }

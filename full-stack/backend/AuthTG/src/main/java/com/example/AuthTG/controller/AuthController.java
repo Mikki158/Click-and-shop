@@ -1,6 +1,7 @@
 package com.example.AuthTG.controller;
 
 import com.example.AuthTG.dto.*;
+import com.example.AuthTG.entity.Role;
 import com.example.AuthTG.entity.User;
 import com.example.AuthTG.service.AuthService;
 import com.example.AuthTG.service.JwtService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,7 @@ public class AuthController {
     public ResponseEntity<TokensDto> tgAuth(
             @RequestParam("id") String id,
             @RequestParam("first_name") String firstName,
+            @RequestParam("last_name") String lastName,
             @RequestParam("username") String username,
             @RequestParam("photo_url") String photoUrl,
             @RequestParam("auth_date") String authDate,
@@ -40,14 +44,18 @@ public class AuthController {
 
         map.put("id", id);
         map.put("first_name", firstName);
+        if (!lastName.equals("null"))
+            map.put("last_name", lastName);
+        if (!photoUrl.equals("null"))
+            map.put("photo_url", photoUrl);
         map.put("username", username);
-        map.put("photo_url", photoUrl);
         map.put("auth_date", authDate);
         map.put("hash", hash);
 
         System.out.println("Логи.");
         System.out.println(map.get("id"));
         System.out.println(map.get("first_name"));
+        System.out.println(map.get("last_name"));
         System.out.println(map.get("username"));
         System.out.println(map.get("photo_url"));
         System.out.println(map.get("auth_date"));
@@ -76,9 +84,11 @@ public class AuthController {
 
         Map<String, Object> response = new HashMap<>();
 
+        String roles = user.getRoles().stream().map(Role::getName).collect(Collectors.joining(", "));
+
         response.put("valid", true);
         response.put("userId", user.getId());
-        response.put("role", user.getRole());
+        response.put("roles", roles);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -88,7 +98,20 @@ public class AuthController {
 
         User user = jwtService.validationAccessToken(authHeader);
 
-        UserDto response = new UserDto(user.getFirstName(), user.getUsername(), user.getPhotoUrl(), user.getRole());
+        Set<String> roles =  user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+
+        UserDto response = new UserDto(user.getId(), user.getUsername(), user.getFirstName(),
+                user.getPhotoUrl(), roles);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/addSeller")
+    public ResponseEntity<String> addSeller(@RequestParam("userId") String userId) {
+
+        String response = authService.addSeller(Long.parseLong(userId));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
