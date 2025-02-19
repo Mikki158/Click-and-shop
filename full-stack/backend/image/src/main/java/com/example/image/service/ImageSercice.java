@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface ImageSercice {
 
-    public String addImage(MultipartFile image, Long productId);
+    String addImage(MultipartFile image, Long productId);
 
-    public List<String> getImageForProduct(Long productId);
+    String deleteImage(String filePath);
+
+    List<String> getImageForProduct(Long productId);
 }

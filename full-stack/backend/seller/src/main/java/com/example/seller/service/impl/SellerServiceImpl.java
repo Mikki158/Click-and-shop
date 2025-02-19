@@ -12,10 +12,14 @@ import com.example.seller.repository.RequestRepository;
 import com.example.seller.service.SellerService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+<<<<<<< Updated upstream
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+=======
+import org.springframework.http.*;
+>>>>>>> Stashed changes
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -70,6 +74,26 @@ public class SellerServiceImpl implements SellerService {
 
         CreateRequestSeller saveReuest = requestRepository.save(newRequest);
 
+<<<<<<< Updated upstream
+=======
+        String url = "https://click-and-shop.ru/bot/sellerRequest";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(saveReuest), headers);
+
+        //HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                botRequest,
+                new ParameterizedTypeReference<>() {}
+        );
+
+>>>>>>> Stashed changes
         return "Заявка №" + saveReuest.getId() + " отправлена, ожидайте проверки";
     }
 
@@ -116,10 +140,66 @@ public class SellerServiceImpl implements SellerService {
 
         String result = response.getBody();
 
+<<<<<<< Updated upstream
+=======
+
+
+        url = "https://click-and-shop.ru/bot/approveRequest?requestId=" + request.getId();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(request), headers);
+
+        //HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        restTemplate = new RestTemplate();
+        restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                botRequest,
+                new ParameterizedTypeReference<UserDto>() {}
+        );
+
+>>>>>>> Stashed changes
         return "Заявка была одобрена, " + result;
     }
 
     @Override
+<<<<<<< Updated upstream
+=======
+    public String rejectRequest(Long requestId) {
+
+        if (requestRepository.findById(requestId).isEmpty()) {
+            throw new RuntimeException("Такой заявки нету");
+        }
+
+        CreateRequestSeller request = requestRepository.getReferenceById(requestId);
+
+        requestRepository.deleteById(requestId);
+
+
+        String url = "https://click-and-shop.ru/bot/rejectRequest?requestId=" + request.getId();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(request), headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(
+                url,
+                HttpMethod.DELETE,
+                botRequest,
+                new ParameterizedTypeReference<CreateRequestSellerDto>() {}
+        );
+
+
+        return "Заявка №" + requestId + " была удалена";
+    }
+
+    @Override
+>>>>>>> Stashed changes
     public List<BrandDto> getBrandList(UserDto user) {
 
         List<Brand> brands = brandRepository.findBySellerId(user.getUserId());
@@ -133,4 +213,20 @@ public class SellerServiceImpl implements SellerService {
 
         return response;
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public BrandDto getBrand(Long brandId) {
+
+//        if (brandRepository.findBySellerId(brandId).isEmpty())
+//            throw new RuntimeException("Брэнда не существует");
+
+        Brand brand = brandRepository.getReferenceById(brandId);
+
+        BrandDto response = brandMapper.toDto(brand);
+
+        return response;
+    }
+>>>>>>> Stashed changes
 }

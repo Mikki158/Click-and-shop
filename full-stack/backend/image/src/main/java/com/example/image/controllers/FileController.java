@@ -37,6 +37,24 @@ public class FileController {
         }
 
         return new ResponseEntity<>(respone, HttpStatus.OK);
+<<<<<<< Updated upstream
+=======
+    }
+
+    @DeleteMapping("/deletePhoto/**")
+    public ResponseEntity<String> deleteImage(HttpServletRequest request) {
+        try {
+            String requestPath = request.getRequestURI();
+            String relativePath = requestPath.substring("/api/files/deletePhoto/".length());
+            String deletePath = "/var/uploads/" + relativePath;
+
+            String response = imageSercice.deleteImage(deletePath);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+>>>>>>> Stashed changes
     }
 
     @GetMapping("/product/{id}")

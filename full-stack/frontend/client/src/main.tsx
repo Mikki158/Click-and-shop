@@ -20,6 +20,11 @@ import Products from '././ui/seller/Products.tsx'
 import NewProduct from '././ui/seller/NewProduct.tsx'
 import EditProduct from '././ui/seller/EditProduct.tsx'
 import UploadImage from '././ui/seller/UploadImage.tsx'
+<<<<<<< Updated upstream
+=======
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+>>>>>>> Stashed changes
 
 const RouterLayout = () => {
   return (
@@ -31,9 +36,29 @@ const RouterLayout = () => {
 
 const SellerLayout = () => {
   return (
+<<<<<<< Updated upstream
     <LayoutSeller>
       <Outlet />
     </LayoutSeller>
+=======
+    <>
+      <LayoutSeller>
+        <Outlet />
+      </LayoutSeller>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
+>>>>>>> Stashed changes
   )
 }
 

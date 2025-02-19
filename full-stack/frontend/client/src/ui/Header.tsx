@@ -16,14 +16,15 @@ import { config } from '../../config'
 import { getData } from '../lib/index'
 import { CategoryProps } from '../../type'
 import TelegramLogin from './TelegramLogin'
+import { store } from "../lib/store";
 
 const bottomNavigation = [
-    { title: "Home", link: "/" },
-    { title: "Shop", link: "/product" },
-    { title: "Cart", link: "/cart" },
-    { title: "Orders", link: "/orders" },
-    { title: "My Account", link: "/profile" },
-    { title: "Blog", link: "/blog" },
+    { title: "на галвную", link: "/" },
+    { title: "Магазин", link: "/product" },
+    { title: "Корзина", link: "/cart" },
+    { title: "Заказы", link: "/orders" },
+    { title: "Мой аккаунт", link: "/profile" },
+    { title: "Блог", link: "/blog" },
 ]
 
 const botUsername = 'clickandshop_bot'; // Замените на имя вашего бота
@@ -33,6 +34,7 @@ const Header = () => {
 
     const [searchText, setSearchText] = useState("");
     const [categories, setCategories] = useState([]);
+    const { cartProduct } = store();
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -125,7 +127,7 @@ const Header = () => {
                         items-center justify-center bg-redText
                         text-whileText absolute -top-1
                         -right-2 text-[9px] rounded-full w-4 h-4'>
-                            0
+                            {cartProduct?.length > 0 ? cartProduct?.length : "0"}
                         </span>
                     </Link>
                 </div>
@@ -139,7 +141,7 @@ const Header = () => {
                 <Menu>
                     <MenuButton className="inline-flex items-center gap-2 rounded-md border border-gray-400 hover:border-white py-1.5 px-3 
                     font-semibold text-gray-300 hover:text-whiteText">
-                        Select category <FaChevronDown className='text-base mt-1'/>
+                        Выбор категории <FaChevronDown className='text-base mt-1'/>
                     </MenuButton>
                     <Transition 
                         enter="transition ease-out duration-75"
@@ -151,7 +153,7 @@ const Header = () => {
                         <MenuItems anchor="bottom end" className='w-52 origin-top-right rounded-xl border border-white/5 bg-black p-1 
                         text-sm/6 text-gray-300 [--anchor-gap:var(--spacing-1)] focus:outline-none hover:text-white z-50'>
                             {categories.map((item:CategoryProps) => (
-                                <MenuItem key={item?._id}>
+                                <MenuItem key={item?.id}>
                                     <Link to={`/category/${item?.base}`}
                                     className='flex w-full items-center gap-2 rounded-lg py-2 px-3 data-[focus]:bg-white/20 tracking-wide'
                                     >

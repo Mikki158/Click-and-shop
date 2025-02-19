@@ -12,10 +12,15 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
+    "@stripe/stripe-js": "^5.6.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/typography": "^0.5.15",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
+<<<<<<< Updated upstream
+=======
+    "firebase": "^11.3.1",
+>>>>>>> Stashed changes
     "lodash": "^4.17.21",
     "merge": "^2.1.1",
     "react": "^18.3.1",
@@ -26,8 +31,11 @@
     "react-multi-carousel": "^2.8.2",
     "react-paginate": "^8.2.0",
     "react-router-dom": "^7.1.1",
+    "react-toastify": "^11.0.3",
     "tailwind": "^4.0.0",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "uuid": "^11.0.5",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+<<<<<<< Updated upstream
 import axios from "axios";
+=======
+>>>>>>> Stashed changes
 
 const UploadImage = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);

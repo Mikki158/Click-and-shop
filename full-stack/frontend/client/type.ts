@@ -1,5 +1,5 @@
 export interface CategoryProps {
-  _id: number;
+  id: number;
   name: string;
   base: string;
   parentCategory: number
@@ -14,4 +14,11 @@ export interface ProductProps {
   categoryId: string;
   brandId: string;
   imagePaths: [string];
+  quantity: number;
+}
+
+export interface BrandProps {
+  id: number;
+  brandName: string;
+  sellerId: string;
 }

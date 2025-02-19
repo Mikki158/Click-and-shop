@@ -8,6 +8,11 @@ const onGetForceToken = async () => {
             .find((row) => row.startsWith('refreshToken='))
             ?.split('=')[1];
 
+<<<<<<< Updated upstream
+=======
+        console.log("REFRESH " + refreshToken)
+
+>>>>>>> Stashed changes
         if (!refreshToken) {
             console.error('Refresh token отсутствует.');
             return;

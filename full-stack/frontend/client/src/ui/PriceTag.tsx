@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import FormattedPrice from "./FormatedPrice";
+import FormattedPrice from "./FormattedPrice";
 
 interface Props {
   regularPrice?: number;
@@ -7,15 +7,17 @@ interface Props {
   className?: string;
 }
 
-export const PriceTag = ({regularPrice, discountedPrice, className}:Props) => {
+const PriceTag = ({ regularPrice, discountedPrice, className }: Props) => {
   return (
-    <div className={twMerge('flex items-center gap-2', className)}>
+    <div className={twMerge("flex items-center gap-2", className)}>
       <p className="line-through text-gray-500 font-medium">
         <FormattedPrice amount={regularPrice} />
       </p>
       <p className="font-bold text-skyText">
-        <FormattedPrice amount={discountedPrice}/>
+        <FormattedPrice amount={discountedPrice} />
       </p>
     </div>
-  )
-}
+  );
+};
+
+export default PriceTag;

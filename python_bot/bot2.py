@@ -4,6 +4,11 @@ from aiogram.utils import executor
 from aiohttp import web
 import asyncio
 
+<<<<<<< Updated upstream
+=======
+from pyexpat.errors import messages
+
+>>>>>>> Stashed changes
 # Telegram bot token
 BOT_TOKEN = "7879270677:AAF_BdUvUylE9XXY8MpTOk8lpiWZL3cMy24"
 
@@ -43,9 +48,95 @@ async def handle_post(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
+<<<<<<< Updated upstream
 # Initialize web application
 app = web.Application()
 app.router.add_post("/bot/send_welcome", handle_post)
+=======
+
+async def sellerRequest(request):
+    try:
+        data = await request.json()
+        requestId = data.get("id")
+        id = data.get("userId")
+        usernamr = data.get("username")
+        firstName = data.get("firstName")
+        brand = data.get("brand")
+        comment = data.get("comment")
+        created = data.get("created")
+
+        if not id:
+            return web.json_response({"error": "Missing 'id' or 'message'"}, status=400)
+
+        message = (
+                "Заявка №" + str(requestId) + "\n" +
+                "Пользователь с username: " + str(usernamr) + "\n" +
+                "С firstName: " + str(firstName) + "\n" +
+                "Хочет зарегестрировать брэнд: " + str(brand) + "\n" +
+                "Комментарий: " + str(comment) + "\n" +
+                "Заявка создана: " + str(created)
+        )
+
+        await bot.send_message("462074124", message)
+        return web.json_response({"status": "success"})
+
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=500)
+
+async def approveRequest(request):
+    try:
+        data = await request.json()
+        requestId = data.get("id")
+        id = data.get("userId")
+        brand = data.get("brand")
+
+        if not id:
+            return web.json_response({"error": "Missing 'id' or 'message'"}, status=400)
+
+        messages = (
+                "Ваша заявка №" + str(requestId) + " \n" +
+                "По созданию бренда: " + str(brand) + "\n" +
+                "Была одобрена. Поздравляю, теперь вы можете выставлять свои товары!"
+        )
+
+        await bot.send_message(id, messages)
+        return web.json_response({"status": "success"})
+
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=500)
+
+
+async def rejectRequest(request):
+    try:
+        data = await request.json()
+        requestId = data.get("id")
+        id = data.get("userId")
+        brand = data.get("brand")
+        comment = data.get("comment")
+
+        if not id:
+            return web.json_response({"error": "Missing 'id' or 'message'"}, status=400)
+
+        messages = (
+                "Ваша заявка №" + str(requestId) + " \n" +
+                "По созданию бренда: " + str(brand) + "\n" +
+                "С коментарием:" + str(comment) + "\n" +
+                "Была отклонена."
+        )
+
+        await bot.send_message(id, messages)
+        return web.json_response({"status": "success"})
+
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=500)
+
+# Initialize web application
+app = web.Application()
+app.router.add_post("/bot/send_welcome", handle_post)
+app.router.add_post("/bot/sellerRequest", sellerRequest)
+app.router.add_post("/bot/approveRequest", approveRequest)
+app.router.add_delete("/bot/rejectRequest", rejectRequest)
+>>>>>>> Stashed changes
 
 if __name__ == "__main__":
     # Run the webhook server and the bot

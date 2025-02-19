@@ -18,5 +18,13 @@ public interface SellerService {
 
     String approveRequest (Long requestId);
 
+<<<<<<< Updated upstream
     List<BrandDto> getBrandList(UserDto user);
+=======
+    String rejectRequest(Long requestId);
+
+    List<BrandDto> getBrandList(UserDto user);
+
+    BrandDto getBrand(Long brandId);
+>>>>>>> Stashed changes
 }

@@ -3,17 +3,37 @@ import { MdOutlineStarOutline } from "react-icons/md";
 import AddToCartBtn from './AddToCartBtn';
 import ProductCardSideNav from './ProductCardSideNav';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import apiClient from '../apiClient';
 
 interface Props {
     item: ProductProps;
 }
 
 const ProductCard = ({item}: Props) => {
+
+    //const [category, setCategory] = useState("")
     const navigation = useNavigate()
 
     const handleProduct = () => {
         navigation(`/product/${item?.id}`)
     }
+
+    useEffect(() => {
+        const fetchData = async() => {
+            try {
+                if(item?.categoryId) {
+                    const categoryReposytory = await apiClient.get(`/api/category/${item?.categoryId}`)
+                    //setCategory(categoryReposytory.data)
+                    console.log(categoryReposytory.data)
+                }
+            } catch(error) {
+                console.error('Error fetching data', error);
+            }
+        }
+
+        fetchData()
+    })
 
   return (
     <div className='border border-gray-200 rounded-lg p-1 overflow-hidden hover:border-black duration-200 cursor-pointer'>
@@ -27,8 +47,8 @@ const ProductCard = ({item}: Props) => {
             <ProductCardSideNav />
         </div>
         <div className='flex flex-col gap-2 px-2 pb-2'>
-            <h3 className='text-xs uppercase font-semibold text-lightText'>{item?.categoryId}</h3>
-            <h2 className='text-lg font-bold line-clamp-2' onClick={handleProduct}>{item?.name}</h2>
+            {/* <h3 className='text-xs uppercase font-semibold text-lightText'>{category}</h3> */}
+            <h2 className='text-lg font-bold line-clamp-2 truncate w-full' onClick={handleProduct}>{item?.name}</h2>
             <div className='text-base text-lightText flex items-center'>
                 <MdOutlineStarOutline />
                 <MdOutlineStarOutline />
@@ -36,7 +56,9 @@ const ProductCard = ({item}: Props) => {
                 <MdOutlineStarOutline />
                 <MdOutlineStarOutline />
             </div>
-            <AddToCartBtn/>
+            <AddToCartBtn
+                product={item}
+            />
         </div>
     </div>
   )

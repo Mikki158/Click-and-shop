@@ -89,6 +89,19 @@ public class ImageServiceImpl implements ImageSercice {
     }
 
     @Override
+    public String deleteImage(String filePath) {
+
+        try {
+            Image image = imageRepository.findByFilePath(filePath);
+            imageRepository.delete(image);
+            Files.deleteIfExists(Paths.get(filePath));
+            return "Файл успешно удален.";
+        } catch (Exception e) {
+            return "Ошибка при удалении файла: " + e.getMessage();
+        }
+    }
+
+    @Override
     public List<String> getImageForProduct(Long productId) {
         List<Image> imageList = imageRepository.findByProductId(productId);
         List<String> urlList = new ArrayList<>();

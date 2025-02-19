@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { config } from '../../config'
-import { ProductProps } from '../../type'
+import { BrandProps, ProductProps } from '../../type'
 import { getData } from '../lib'
 import Loading from '../ui/Loading'
 import Container from '../ui/Container'
 import _ from "lodash";
-import { PriceTag } from '../ui/PriceTag'
+import PriceTag from '../ui/PriceTag'
 import { MdOutlineStarOutline } from 'react-icons/md'
 import AddToCartBtn from '../ui/AddToCartBtn'
 import ProductCard from '../ui/ProductCard'
@@ -20,6 +20,10 @@ const Product = () => {
   const [imgUrl, setImgUrl] = useState("")
   const {id} = useParams();
   const [fullCategory, setFullCategory] = useState("")
+<<<<<<< Updated upstream
+=======
+  const [brand, setBrand] = useState<BrandProps | null>(null);
+>>>>>>> Stashed changes
   
     const endpoint = id 
     ? `${config.baseUrl}/api/product/${id}` 
@@ -38,19 +42,39 @@ const Product = () => {
             setProductData(null);            
           }
 
+<<<<<<< Updated upstream
           console.log(data)
 
           document.title = data.name
+=======
+          console.log("DATA")
+          console.log(data)
+
+          document.title = data.name
+
+          if(data.categoryId) {
+            const categoryRepository = await apiClient.get(`/api/category/${data?.categoryId}`)
+            setFullCategory(categoryRepository.data);
+            console.log(categoryRepository.data)
+          }
+
+          if(data.brandId) {
+            const brandRepository = await apiClient.get(`/api/seller/brand/${data?.brandId}`)
+            setBrand(brandRepository.data);
+            console.log(brandRepository.data)
+          }
+>>>>>>> Stashed changes
           
         } catch (error) {
           console.error('Error fetching data', error);          
         } finally {
           setLoading(false);
-        }
+        } 
       };
 
       fetchData();
 
+<<<<<<< Updated upstream
       apiClient.get("/api/category", {
         params: productData?.categoryId
       })
@@ -60,6 +84,16 @@ const Product = () => {
       .catch((error) => {
         console.error("Ошибка при получени полной категории ", error);
       })      
+=======
+      // apiClient.get(`/api/category/${productData?.categoryId}`)
+      // .then((response) => {
+      //   setFullCategory(response.data)
+      //   console.log(response)
+      // })
+      // .catch((error) => {
+      //   console.error("Ошибка при получени полной категории ", error);
+      // })      
+>>>>>>> Stashed changes
 
     }, [id, endpoint]);
 
@@ -94,8 +128,13 @@ const Product = () => {
                 </div>
               </div>
               <div className='flex flex-col gap-4'>
+<<<<<<< Updated upstream
                 <label>{productData?.categoryId}</label>
                 <label>{productData?.brandId}</label>
+=======
+                <label>{fullCategory}</label>
+                <label>{brand?.brandName}</label>
+>>>>>>> Stashed changes
                 <h2 className='text-3xl font-bold'>{productData?.name}</h2>
                 <div className='flex items-center justify-between'>
                   <PriceTag 
@@ -130,7 +169,7 @@ const Product = () => {
           ) : (
             <div>
               <p className='text-4xl font-semibold mb-5 text-center'>
-                Products Collection
+                Коллекция продуктов
               </p>
               <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
                 {allProducts?.map((item:ProductProps) => (

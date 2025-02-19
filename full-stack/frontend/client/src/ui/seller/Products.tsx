@@ -1,11 +1,19 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import apiClient from "../../apiClient";
+<<<<<<< Updated upstream
+=======
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+>>>>>>> Stashed changes
 
 const Products = () => {
 
   const [products, setProducts] = useState<any[]>([]); // Состояние для хранения списка товаров
+<<<<<<< Updated upstream
   const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
+=======
+>>>>>>> Stashed changes
 
   const navigate = useNavigate()
 
@@ -24,8 +32,39 @@ const Products = () => {
 
     try {
       const response = await apiClient.delete(`/api/product/${id}`)
+<<<<<<< Updated upstream
       console.log(response.data)
     } catch (error) {
+=======
+      toast.success('Товар был успешно удален!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+      console.log(response.data)
+      
+      const response2 = await apiClient.get("/api/product/seller"); // Замените URL на ваш API
+      console.log(response2)
+      setProducts(response2.data); // Предполагается, что ответ содержит массив товаров
+      
+    } catch (error) {
+      toast.error('Произошла ошибка при удалении товара', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+>>>>>>> Stashed changes
       console.error("Произошла ошибка при удалении товара: ", error)
     }
   }
@@ -39,7 +78,10 @@ const Products = () => {
       } catch (error) {
         console.error("Ошибка при загрузке товаров:", error);
       } finally {
+<<<<<<< Updated upstream
         setLoading(false);
+=======
+>>>>>>> Stashed changes
       }
     };
 

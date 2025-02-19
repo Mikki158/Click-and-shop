@@ -4,25 +4,25 @@ const FooterTop = () => {
 
     const incentives = [
         {
-            name: "Free shipping",
+            name: "Бесплатная доставка",
             imageSrc:
               "https://www.svgrepo.com/show/445701/delivery-fast.svg",
             description:
-              "It's not actually free we just price it into the products. Someone's paying for it, and it's not us.",
+              "На самом деле это не бесплатно, мы просто включаем это в стоимость продуктов. Кто-то платит за это, и это не мы.",
           },
           {
-            name: "10-year warranty",
+            name: "10 лет гарантия",
             imageSrc:
               "https://www.svgrepo.com/show/286468/certificate.svg",
             description:
-              "If it breaks in the first 10 years we'll replace it. After that you're on your own though.",
+              "Если он сломается в течение первых 10 лет, мы заменим его. После этого вы будете предоставлены сами себе.",
           },
           {
-            name: "Exchanges",
+            name: "Обмены",
             imageSrc:
               "https://www.svgrepo.com/show/216002/exchange-change.svg",
             description:
-              "If you don't like it, trade it to one of your friends for something of theirs. Don't send it here though.",
+              "Если вам что-то не понравится, обменяйте это у кого-нибудь из ваших друзей на что-нибудь из их коллекции. Но не отправляйте это сюда.",
           },
     ]
 

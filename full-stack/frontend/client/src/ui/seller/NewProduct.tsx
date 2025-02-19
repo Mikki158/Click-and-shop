@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from "react";
 import apiClient from '../../apiClient'
+<<<<<<< Updated upstream
+=======
+import { BrandProps, CategoryProps } from "../../../type";
+import { toast } from 'react-toastify'
+>>>>>>> Stashed changes
 
 const NewProduct: React.FC = () => {
 
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
 
+<<<<<<< Updated upstream
     const [brands, setBrands] = useState([]);
     const [brandId, setBrandId] = useState(null)
     
     const [categorys, setCategorys] = useState([])
     const [categoryId, setCategoryId] = useState(null)
+=======
+    const [brands, setBrands] = useState<BrandProps[]>([]);
+    const [brandId, setBrandId] = useState('')
+    
+    const [categorys, setCategorys] = useState<CategoryProps[]>([])
+    const [categoryId, setCategoryId] = useState('')
+>>>>>>> Stashed changes
 
     const [name, setName] = useState("")
     const [regularPrice, setRegularPrice] = useState("")
@@ -18,6 +31,7 @@ const NewProduct: React.FC = () => {
     const [description, setDescription] = useState("")
     let productId = ""
 
+<<<<<<< Updated upstream
     const nameHandler = (event) => {
         setName(event.target.value)
     }
@@ -31,6 +45,21 @@ const NewProduct: React.FC = () => {
     }
 
     const descriptionHandler = (event) => {
+=======
+    const nameHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value)
+    }
+
+    const regularPriceHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setRegularPrice(event.target.value)
+    }
+
+    const discountedPriceHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setDiscountedPrice(event.target.value)
+    }
+
+    const descriptionHandler = (event : React.ChangeEvent<HTMLTextAreaElement>) => {
+>>>>>>> Stashed changes
         setDescription(event.target.value)
     }
 
@@ -57,13 +86,21 @@ const NewProduct: React.FC = () => {
       })
     }, [])
 
+<<<<<<< Updated upstream
     const handleChangeBrand = (event) => {
+=======
+    const handleChangeBrand = (event : React.ChangeEvent<HTMLSelectElement>) => {
+>>>>>>> Stashed changes
       const selectedBrandId = event.target.value;
       setBrandId(selectedBrandId);
       console.log("Выбран брэнд с id ", selectedBrandId);
     }
 
+<<<<<<< Updated upstream
     const handleChangeCategory = (event) => {
+=======
+    const handleChangeCategory = (event : React.ChangeEvent<HTMLSelectElement>) => {
+>>>>>>> Stashed changes
       const selectCategoryId = event.target.value;
       setCategoryId(selectCategoryId);
       console.log("выбрана категория с id ", selectCategoryId)
@@ -154,10 +191,39 @@ const NewProduct: React.FC = () => {
 
       await apiClient.put('/api/product/updateProduct', data)
       .then((response) => {
+<<<<<<< Updated upstream
           console.log(response)
       })
       .catch((error) => {
           console.error("Ошибка при обновлении товара ", error)
+=======
+
+        toast.success('Товар был успешно создан!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error("Ошибка при обновлении товара ", error)
+        toast.error('Ошибка при добавлении товара', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+>>>>>>> Stashed changes
       })
 
       handleUpload()

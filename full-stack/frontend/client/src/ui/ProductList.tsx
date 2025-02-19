@@ -7,9 +7,9 @@ const ProductList = () => {
   return <Container>
     <div className='mb-10'>
         <div className='flex items-center justify-between'>
-            <Title text="Top Selling product"/>
+            <Title text="Самые продаваемые продукты"/>
             <Link to={'/product'}>
-                View All Products
+              Просмотреть все товары
             </Link>
         </div>
         <div className='w-full h-[1px] bg-gray-200 mt-2'/>

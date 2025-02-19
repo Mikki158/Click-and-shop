@@ -11,10 +11,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< Updated upstream
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+=======
+import java.util.*;
+>>>>>>> Stashed changes
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -114,5 +118,11 @@ public class AuthController {
         String response = authService.addSeller(Long.parseLong(userId));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getUsers() {
+
+        return new ResponseEntity<>(authService.getAllUsers(), HttpStatus.OK);
     }
 }

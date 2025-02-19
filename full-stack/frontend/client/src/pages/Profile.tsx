@@ -81,6 +81,7 @@ const Profile = () => {
             {
               role.includes("Seller") ? (
                 <Link to={"/seller"}>
+<<<<<<< Updated upstream
                   <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
                     На страницу продавца
                   </h3>
@@ -90,6 +91,23 @@ const Profile = () => {
                   <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
                     Стать продовцов
                   </h3>
+=======
+                  <div className="bg-white p-2 rounded shadow-sm cursor-pointer hover:bg-gray-100">
+                    На страницу продавца
+                  </div>
+                  {/* <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
+                    На страницу продавца
+                  </h3> */}
+                </Link>
+              ) : (
+                <Link to={"/createSeller"}>
+                  <div className="bg-white p-2 rounded shadow-sm cursor-pointer hover:bg-gray-100">
+                    Стать продовцов
+                  </div>
+                  {/* <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
+                    Стать продовцов
+                  </h3> */}
+>>>>>>> Stashed changes
                 </Link>
               )
             }
