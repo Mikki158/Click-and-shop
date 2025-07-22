@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from "react";
 import apiClient from '../../apiClient'
-<<<<<<< Updated upstream
-=======
 import { BrandProps, CategoryProps } from "../../../type";
 import { toast } from 'react-toastify'
->>>>>>> Stashed changes
 
 const NewProduct: React.FC = () => {
 
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
 
-<<<<<<< Updated upstream
-    const [brands, setBrands] = useState([]);
-    const [brandId, setBrandId] = useState(null)
-    
-    const [categorys, setCategorys] = useState([])
-    const [categoryId, setCategoryId] = useState(null)
-=======
     const [brands, setBrands] = useState<BrandProps[]>([]);
     const [brandId, setBrandId] = useState('')
     
     const [categorys, setCategorys] = useState<CategoryProps[]>([])
     const [categoryId, setCategoryId] = useState('')
->>>>>>> Stashed changes
 
     const [name, setName] = useState("")
     const [regularPrice, setRegularPrice] = useState("")
@@ -31,21 +20,6 @@ const NewProduct: React.FC = () => {
     const [description, setDescription] = useState("")
     let productId = ""
 
-<<<<<<< Updated upstream
-    const nameHandler = (event) => {
-        setName(event.target.value)
-    }
-
-    const regularPriceHandler = (event) => {
-        setRegularPrice(event.target.value)
-    }
-
-    const discountedPriceHandler = (event) => {
-        setDiscountedPrice(event.target.value)
-    }
-
-    const descriptionHandler = (event) => {
-=======
     const nameHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
     }
@@ -59,7 +33,6 @@ const NewProduct: React.FC = () => {
     }
 
     const descriptionHandler = (event : React.ChangeEvent<HTMLTextAreaElement>) => {
->>>>>>> Stashed changes
         setDescription(event.target.value)
     }
 
@@ -86,21 +59,14 @@ const NewProduct: React.FC = () => {
       })
     }, [])
 
-<<<<<<< Updated upstream
-    const handleChangeBrand = (event) => {
-=======
+
     const handleChangeBrand = (event : React.ChangeEvent<HTMLSelectElement>) => {
->>>>>>> Stashed changes
       const selectedBrandId = event.target.value;
       setBrandId(selectedBrandId);
       console.log("Выбран брэнд с id ", selectedBrandId);
     }
 
-<<<<<<< Updated upstream
-    const handleChangeCategory = (event) => {
-=======
     const handleChangeCategory = (event : React.ChangeEvent<HTMLSelectElement>) => {
->>>>>>> Stashed changes
       const selectCategoryId = event.target.value;
       setCategoryId(selectCategoryId);
       console.log("выбрана категория с id ", selectCategoryId)
@@ -138,7 +104,7 @@ const NewProduct: React.FC = () => {
 
         console.log(formData)
 
-        await apiClient.post("/api/files/addPhoto", formData, {
+        await apiClient.post("/api/files/addProductImage", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -191,12 +157,6 @@ const NewProduct: React.FC = () => {
 
       await apiClient.put('/api/product/updateProduct', data)
       .then((response) => {
-<<<<<<< Updated upstream
-          console.log(response)
-      })
-      .catch((error) => {
-          console.error("Ошибка при обновлении товара ", error)
-=======
 
         toast.success('Товар был успешно создан!', {
           position: "top-right",
@@ -223,7 +183,6 @@ const NewProduct: React.FC = () => {
           progress: undefined,
           theme: "light",
           });
->>>>>>> Stashed changes
       })
 
       handleUpload()
@@ -348,19 +307,6 @@ const NewProduct: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">Цвет</label>
-              <input
-                type="text"
-                className="w-full border border-gray-300 rounded-md p-2"
-                placeholder="Цвет"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Укажите цвет товара в этом поле. Чтобы создать несколько вариантов одного и того же
-                товара, используйте меню слева.
-              </p>
-            </div>
-
-            <div>
               <label className="block text-sm font-medium">Описание</label>
               <textarea
                 className="w-full border border-gray-300 rounded-md p-2"
@@ -372,59 +318,7 @@ const NewProduct: React.FC = () => {
             </div>
           </div>
 
-          {/* Размеры */}
-          <div className="mt-8">
-            <h2 className="text-lg font-bold mb-4">Размеры</h2>
-            <div className="grid grid-cols-3 gap-4">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2"
-                placeholder="Размер"
-              />
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2"
-                placeholder="Рос. размер"
-              />
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2"
-                placeholder="Цена"
-              />
-            </div>
-            <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-              Добавить
-            </button>
-          </div>
-
-          {/* Габариты упаковки */}
-          <div className="mt-8">
-            <h2 className="text-lg font-bold mb-4">Габариты упаковки</h2>
-            <div className="grid grid-cols-3 gap-4">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2"
-                placeholder="Длина (см)"
-              />
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2"
-                placeholder="Ширина (см)"
-              />
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2"
-                placeholder="Высота (см)"
-              />
-            </div>
-            <div className="mt-4">
-              <input
-                type="text"
-                className="w-full border border-gray-300 rounded-md p-2"
-                placeholder="Вес (г)"
-              />
-            </div>
-          </div>
+          
 
           {/* Кнопки */}
           <div className="mt-8 flex justify-between">

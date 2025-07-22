@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface SellerService {
 
-    UserDto verifyAuthentication(String authHeader);
+    UserDto verifyAuthentication(Long userId);
 
     String createRequestSeller(CreateRequestSellerDto request, UserDto user);
 
@@ -18,13 +18,9 @@ public interface SellerService {
 
     String approveRequest (Long requestId);
 
-<<<<<<< Updated upstream
-    List<BrandDto> getBrandList(UserDto user);
-=======
     String rejectRequest(Long requestId);
 
-    List<BrandDto> getBrandList(UserDto user);
+    List<BrandDto> getBrandList(Long userId);
 
     BrandDto getBrand(Long brandId);
->>>>>>> Stashed changes
 }

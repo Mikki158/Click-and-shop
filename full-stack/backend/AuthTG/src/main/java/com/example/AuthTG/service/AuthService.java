@@ -19,9 +19,9 @@ public interface AuthService {
     String addSeller(Long userId);
 
     User auth(Map<String, String> data);
-<<<<<<< Updated upstream
-=======
 
     List<UserDto> getAllUsers();
->>>>>>> Stashed changes
+
+    List<Long> getAdmins();
+
 }

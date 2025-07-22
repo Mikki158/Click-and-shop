@@ -14,17 +14,26 @@ import Cancel from './pages/Cancel.tsx'
 import NotFound from './pages/NotFound.tsx'
 import Login from './pages/Login.tsx'
 import CreateSeller from './pages/CreateSeller.tsx'
+import ReviewDashboard from './pages/ReviewDashboard.tsx'
 import Home from './ui/seller/Home.tsx'
 import LayoutSeller from './ui/seller/LayoutSeller.tsx'
 import Products from '././ui/seller/Products.tsx'
 import NewProduct from '././ui/seller/NewProduct.tsx'
 import EditProduct from '././ui/seller/EditProduct.tsx'
 import UploadImage from '././ui/seller/UploadImage.tsx'
-<<<<<<< Updated upstream
-=======
+import Supplies from '././ui/seller/Supplies.tsx'
+import CreateSupply from './pages/seller/CreateSupply'
+import ProductReviews from './pages/seller/ProductReviews'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
->>>>>>> Stashed changes
+import LayoutAdmin from './ui/admin/LayoutAdmin'
+import HomeAdmin from './ui/admin/HomeAdmin'
+import Users from './pages/admin/Users'
+import Warehouse from './pages/admin/Warehouse'
+import PickupPoint from './pages/admin/PickupPoint'
+import ReviewRequest from './pages/admin/ReviewRequest'
+import OrderDetails from './pages/OrderDetails'
+import { redirect } from "react-router-dom";
 
 const RouterLayout = () => {
   return (
@@ -36,11 +45,6 @@ const RouterLayout = () => {
 
 const SellerLayout = () => {
   return (
-<<<<<<< Updated upstream
-    <LayoutSeller>
-      <Outlet />
-    </LayoutSeller>
-=======
     <>
       <LayoutSeller>
         <Outlet />
@@ -58,7 +62,28 @@ const SellerLayout = () => {
         theme="light"
       />
     </>
->>>>>>> Stashed changes
+  )
+}
+
+const AdminLayout = () => {
+  return (
+    <>
+      <LayoutAdmin>
+        <Outlet />
+      </LayoutAdmin>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
   )
 }
 
@@ -108,6 +133,10 @@ const router = createBrowserRouter([
         element:<Orders />,
       },
       {
+        path: '/order/:id',
+        element:<OrderDetails/>
+      },
+      {
         path:'/widgets/login',
         element:<Login />,
       },
@@ -124,6 +153,10 @@ const router = createBrowserRouter([
         element:<CreateSeller />
       },
       {
+        path:'/reviews',
+        element:<ReviewDashboard/>
+      },
+      {
         path:'*',
         element:<NotFound />,
       }
@@ -132,6 +165,14 @@ const router = createBrowserRouter([
   {
     path:'/seller',
     element:<SellerLayout />,
+    loader: () => {
+      const rolesString = localStorage.getItem("roles") || "";
+      const roles = rolesString.split(",").map(r => r.trim());
+      if (!roles.includes("Seller")) {
+        throw redirect("/");
+      }
+      return null;
+    },
     children:[
       {
         path:'',
@@ -152,6 +193,52 @@ const router = createBrowserRouter([
       {
         path:'image',
         element:<UploadImage />
+      },
+      {
+        path:'supplies',
+        element:<Supplies/>
+      },
+      {
+        path:'createSupply',
+        element:<CreateSupply/>
+      },
+      {
+        path:'reviews',
+        element:<ProductReviews/>
+      }
+    ]
+  },
+  {
+    path:'/admin',
+    element:<AdminLayout />,
+    loader: () => {
+      const rolesString = localStorage.getItem("roles") || "";
+      const roles = rolesString.split(",").map(r => r.trim());
+      if (!roles.includes("Admin")) {
+        throw redirect("/");
+      }
+      return null;
+    },
+    children:[
+      {
+        path:'',
+        element:<HomeAdmin />
+      },
+      {
+        path:'users',
+        element:<Users/>
+      },
+      {
+        path:'warehouse',
+        element:<Warehouse/>
+      },
+      {
+        path:'pickupPoints',
+        element: <PickupPoint />
+      },
+      {
+        path:'reviews',
+        element:<ReviewRequest/>
       }
     ]
   }

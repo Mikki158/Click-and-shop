@@ -1,16 +1,12 @@
 package com.example.AuthTG.service.impl;
 
-<<<<<<< Updated upstream
-import com.example.AuthTG.dto.TokenType;
-import com.example.AuthTG.dto.TokensDto;
-import com.example.AuthTG.dto.UpdateTokensIn;
-=======
 import com.example.AuthTG.dto.*;
->>>>>>> Stashed changes
 import com.example.AuthTG.entity.Role;
 import com.example.AuthTG.entity.User;
+import com.example.AuthTG.entity.UserTGTokens;
 import com.example.AuthTG.repository.RoleRepository;
 import com.example.AuthTG.repository.UserRepository;
+import com.example.AuthTG.repository.UserTokensRepository;
 import com.example.AuthTG.service.AuthService;
 import com.example.AuthTG.service.JwtService;
 import lombok.AllArgsConstructor;
@@ -115,25 +111,6 @@ public class AuthServiceImpl implements AuthService {
             if (data.get("photo_url") != null)
                 user.setPhotoUrl(data.get("photo_url"));
 
-<<<<<<< Updated upstream
-            
-=======
-
-            String url = "https://click-and-shop.ru/api/cart/createCart";
-
-            HttpHeaders headers = new HttpHeaders();
-
-            HttpEntity<CartDto> entity = new HttpEntity<>(new CartDto(user.getId()), headers);
-
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    entity,
-                    new ParameterizedTypeReference<CartDto>() {}
-            );
->>>>>>> Stashed changes
-
             saveUser(user);
 
             System.out.println("Пользователь сохранился");
@@ -144,8 +121,6 @@ public class AuthServiceImpl implements AuthService {
 
         return user;
     }
-<<<<<<< Updated upstream
-=======
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -167,5 +142,20 @@ public class AuthServiceImpl implements AuthService {
 
         return response;
     }
->>>>>>> Stashed changes
+
+    @Override
+    public List<Long> getAdmins() {
+
+        List<User> admins = userRepository.findByRoles_Name("Admin");
+        List <Long> response = new ArrayList<>();
+
+        for (User user : admins) {
+
+            response.add(user.getId());
+        }
+
+        return response;
+    }
+
+
 }

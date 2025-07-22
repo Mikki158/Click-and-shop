@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/image-0.0.1-SNAPSHOT.jar app.jar
 
 # Указываем порт, на котором работает приложение
-EXPOSE 8081
+EXPOSE 8082
 
 # Указываем команду запуска приложения
 CMD ["java", "-jar", "app.jar"]

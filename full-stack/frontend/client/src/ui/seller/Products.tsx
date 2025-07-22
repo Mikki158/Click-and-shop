@@ -1,19 +1,12 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import apiClient from "../../apiClient";
-<<<<<<< Updated upstream
-=======
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
->>>>>>> Stashed changes
 
 const Products = () => {
 
   const [products, setProducts] = useState<any[]>([]); // Состояние для хранения списка товаров
-<<<<<<< Updated upstream
-  const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
-=======
->>>>>>> Stashed changes
 
   const navigate = useNavigate()
 
@@ -32,10 +25,6 @@ const Products = () => {
 
     try {
       const response = await apiClient.delete(`/api/product/${id}`)
-<<<<<<< Updated upstream
-      console.log(response.data)
-    } catch (error) {
-=======
       toast.success('Товар был успешно удален!', {
         position: "top-right",
         autoClose: 5000,
@@ -64,7 +53,6 @@ const Products = () => {
         progress: undefined,
         theme: "light",
         });
->>>>>>> Stashed changes
       console.error("Произошла ошибка при удалении товара: ", error)
     }
   }
@@ -78,18 +66,24 @@ const Products = () => {
       } catch (error) {
         console.error("Ошибка при загрузке товаров:", error);
       } finally {
-<<<<<<< Updated upstream
-        setLoading(false);
-=======
->>>>>>> Stashed changes
+
       }
     };
 
     fetchProducts();
   }, []);
 
+  function pluralizeReview(count: number): string {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    if (mod10 === 1 && mod100 !== 11) return `${count} оценка`;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return `${count} оценки`;
+    return `${count} оценок`;
+  }
+
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gray-100 min-h-screen">
       {/* Кнопка "Добавить" */}
       <div className="flex justify-between items-center mb-4">
         <button 
@@ -143,7 +137,7 @@ const Products = () => {
             <div className="col-span-1">
               {/* Оценка товара */}
               <p className="text-gray-500">
-                {product.rating || 0}, {product.reviewCount || 0} оценок
+                {product.rating || 0}, {pluralizeReview(product.ratingCount) || 0}
               </p>
             </div>
             <div className="col-span-1">

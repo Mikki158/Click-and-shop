@@ -1,10 +1,8 @@
 package com.example.cart.mapper;
 
-import com.example.cart.dto.CartProductDto;
-import com.example.cart.entity.Cart;
-import com.example.cart.entity.CartProduct;
-import com.example.cart.repository.CartProductRepository;
-import com.example.cart.repository.CartRepository;
+import com.example.cart.dto.cart.CartProductDto;
+import com.example.cart.entity.cart.CartProduct;
+import com.example.cart.repository.cart.CartRepository;
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

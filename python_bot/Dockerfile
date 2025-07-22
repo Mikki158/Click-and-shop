@@ -8,9 +8,9 @@ WORKDIR /app
 COPY . /app
 
 # Устанавливаем зависимости
-RUN pip install --no-cache-dir -r requirements2.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
 # Запускаем бота
-CMD ["python", "bot2.py"]
+CMD ["python", "navigation.py"]

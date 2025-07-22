@@ -17,11 +17,16 @@ interface UserType {
 interface StoreType {
   currentUser: UserType | null;
   cartProduct: CartProduct[];
+  favoriteProduct: ProductProps[];
   getUserInfo: () => Promise<void>;
   fetchCart: () => Promise<void>;
   addToCart: (product: CartProduct) => Promise<void>;
+  addToFavorite: (productId: number) => Promise<void>;
+  fetchFavorite: () => Promise<void>;
   decreaseQuantity: (productId: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
+
+  fetchOrder: () => Promise<void>;
 }
 
 const customStorage = {
@@ -41,10 +46,13 @@ export const store = create<StoreType>()(
     (set) => ({
       currentUser: null,
       cartProduct: [],
+      favoriteProduct: [],
+      orders: [],
 
       getUserInfo: async () => {
         try {
           const response = await apiClient.get("/api/auth/userInfo");
+          console.log("Информация о пользователе ", response)
           set({ currentUser: response.data});
         } catch (error) {
           console.error("Ошибка при загрузке информации пользователя ", error);
@@ -115,6 +123,67 @@ export const store = create<StoreType>()(
           console.error("Ошибка при удалении товара из корзины ", error);
         }
       },
+
+      fetchOrder: async (orderId: number) => {
+        try {
+          const response = apiClient.get('/api/order') 
+          const orders = response.data;
+
+          console.log("Получение заказов ", response);
+
+          const orderDetails = await Promise.all(
+            orders.map(async (orders: {id: string }) => {
+              const productsResponse = await apiClient.get(`/api/order/${id}/products`);
+
+              return productsResponse;
+            })
+          );
+
+          console.log("ЗАКАЗЫ ", orderDetails);
+
+          set({orders: orderDetails});
+
+
+
+
+        } catch (error) {
+          console.log("Ошибка при получении заказов", error);
+        }
+      },
+      fetchFavorite: async () => {
+        const response = await apiClient.get('/api/favorite')
+        const favoriteProducts = response.data
+
+        console.log("Получение корзины")
+        console.log(response)
+
+        const productDetails = await Promise.all(
+          favoriteProducts.map(async (favoriteProduct: { id: string, quantity: number }) => {
+            const productResponse = await apiClient.get(`/api/product/${favoriteProduct.id}`);
+            
+            return productResponse.data;
+          })
+        );
+
+        console.log("ТОВАРЫ ИЗБРАННЫЕ:")
+        console.log(productDetails);
+
+        set({ favoriteProduct: productDetails});
+      },
+      addToFavorite: async (productId: number) => {
+        const data = {
+          id: productId
+        }
+
+        apiClient.post('/api/favorite', data)
+        .then(() => {
+          console.log("Товар был добавлен в список избранного")
+          store.getState().fetchFavorite();
+        })
+        .catch((error) => {
+          console.error("Ошибка при добавлении товара в список избранного", error)
+        })   
+      }
     }),
     {
       name: "supergear-storage",

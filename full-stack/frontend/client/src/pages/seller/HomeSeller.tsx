@@ -1,6 +1,6 @@
 const HomeSeller = () => {
   return (
-    <div>Home seller</div>
+    <div bg-gray-100 >Home seller</div>
   )
 }
 

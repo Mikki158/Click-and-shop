@@ -1,23 +1,16 @@
 package com.example.cart.service.impl;
 
-import com.example.cart.dto.CartDto;
-import com.example.cart.dto.CartProductDto;
-import com.example.cart.dto.UserDto;
-import com.example.cart.entity.Cart;
-import com.example.cart.entity.CartProduct;
+import com.example.cart.dto.cart.CartDto;
+import com.example.cart.dto.cart.CartProductDto;
+import com.example.cart.entity.cart.Cart;
+import com.example.cart.entity.cart.CartProduct;
 import com.example.cart.mapper.CartMapper;
 import com.example.cart.mapper.CartProductMapper;
-import com.example.cart.repository.CartProductRepository;
-import com.example.cart.repository.CartRepository;
+import com.example.cart.repository.cart.CartProductRepository;
+import com.example.cart.repository.cart.CartRepository;
 import com.example.cart.service.CartService;
 import lombok.AllArgsConstructor;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,32 +27,20 @@ public class CartServiceImpl implements CartService {
     CartMapper cartMapper;
 
     @Override
-    public UserDto verifyAuthentication(String authHeader) {
-
-        String url = "https://click-and-shop.ru/api/auth/userInfo";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<UserDto> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                new ParameterizedTypeReference<UserDto>() {}
-        );
-
-        UserDto responseBody = response.getBody();
-
-        return responseBody;
-    }
-
-    @Override
     public List<CartProductDto> getProducts(Long userId) {
 
-        Cart cart = cartRepository.findByUserId(userId);
+        System.out.println("Получение товаров");
+
+        Optional<Cart> existCart  = cartRepository.findByUserId(userId);
+        Cart cart;
+
+        if (existCart.isPresent()) {
+            System.out.println("Корзина найдена для возврата товаров");
+            cart = existCart.get();
+        } else {
+            System.out.println("Корзина НЕ найдена для возврата товаров");
+            cart = cartRepository.save(new Cart(userId));
+        }
 
         List<CartProduct> products = cartProductRepository.findByCart(cart);
 
@@ -80,7 +61,16 @@ public class CartServiceImpl implements CartService {
 
         System.out.println("USER_ID = " + userId);
 
-        Cart cart = cartRepository.findByUserId(userId);
+        Optional<Cart> existCart  = cartRepository.findByUserId(userId);
+        Cart cart;
+
+        if (existCart.isPresent()) {
+            System.out.println("Корзина найдена для добавления товара в корзину");
+            cart = existCart.get();
+        } else {
+            System.out.println("Корзина НЕ найдена для добавления товара в корзину");
+            cart = cartRepository.save(new Cart(userId));
+        }
 
         product.setCartId(cart.getId());
 
@@ -111,6 +101,8 @@ public class CartServiceImpl implements CartService {
             throw new RuntimeException("Корзина уже существует");
         }
 
+        System.out.println("Создание корзины");
+
         Cart cart = new Cart(userId);
 
         Cart saveCart = cartRepository.save(cart);
@@ -121,7 +113,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public String decreaseQuantity(Long userId, Long productId) {
 
-        Cart cart = cartRepository.findByUserId(userId);
+        System.out.println("Уменьшение товаров в корзине");
+
+        Optional<Cart> existCart  = cartRepository.findByUserId(userId);
+        Cart cart;
+
+        if (existCart.isPresent()) {
+            System.out.println("Корзина найдена для уменьшения количества товаров");
+            cart = existCart.get();
+        } else {
+            System.out.println("Корзина НЕ найдена для уменьшения количества товаров");
+            cart = cartRepository.save(new Cart(userId));
+        }
 
         Optional<CartProduct> existingProduct = cartProductRepository.findByProductIdAndCart(
                 productId, cart);
@@ -139,7 +142,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public String removeFromCart(Long userId, Long productId) {
 
-        Cart cart = cartRepository.findByUserId(userId);
+        System.out.println("Удаление товаров из корзины");
+
+        Optional<Cart> existCart  = cartRepository.findByUserId(userId);
+        Cart cart;
+
+        if (existCart.isPresent()) {
+            System.out.println("Корзина найдена для удаления товаров");
+            cart = existCart.get();
+        } else {
+            System.out.println("Корзина НЕ найдена для удаления товаров");
+            cart = cartRepository.save(new Cart(userId));
+        }
 
         Optional<CartProduct> existingProduct = cartProductRepository.findByProductIdAndCart(
                 productId, cart);
@@ -150,6 +164,27 @@ public class CartServiceImpl implements CartService {
             return "Товар был удален";
         } else {
             throw new RuntimeException("Такого товара нет");
+        }
+    }
+
+    @Override
+    public void clearCart(Long userId) {
+
+        Optional<Cart> existCart  = cartRepository.findByUserId(userId);
+        Cart cart;
+
+        if (existCart.isPresent()) {
+            System.out.println("Корзина найдена для удаления товаров");
+            cart = existCart.get();
+        } else {
+            System.out.println("Корзина НЕ найдена для удаления товаров");
+            return;
+        }
+
+        List<CartProduct> products = cartProductRepository.findByCart(cart);
+
+        for (CartProduct product : products) {
+            cartProductRepository.delete(product);
         }
     }
 }

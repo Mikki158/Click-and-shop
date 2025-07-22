@@ -17,14 +17,15 @@ import { getData } from '../lib/index'
 import { CategoryProps } from '../../type'
 import TelegramLogin from './TelegramLogin'
 import { store } from "../lib/store";
+import { authStore } from "../lib/auth";
+import apiClient from '../apiClient';
 
 const bottomNavigation = [
     { title: "на галвную", link: "/" },
-    { title: "Магазин", link: "/product" },
     { title: "Корзина", link: "/cart" },
     { title: "Заказы", link: "/orders" },
     { title: "Мой аккаунт", link: "/profile" },
-    { title: "Блог", link: "/blog" },
+    { title: "Мои отзывы", link: "/reviews" },
 ]
 
 const botUsername = 'clickandshop_bot'; // Замените на имя вашего бота
@@ -34,35 +35,38 @@ const Header = () => {
 
     const [searchText, setSearchText] = useState("");
     const [categories, setCategories] = useState([]);
-    const { cartProduct } = store();
+    const { favoriteProduct, cartProduct } = store();
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    const checkAuthenticated = () => {
+        const token = sessionStorage.getItem("accessToken");
+        authStore.getState().setIsAuthenticated(!!token);
+    };
+
     useEffect(() => {
         const fetchData = async() => {
-            const endpoint = `${config?.baseUrl}/api/category`;
-
-            try {
-
-                const data = await getData(endpoint);
-                setCategories(data);
-                console.log(data);                
-                
-            } catch (error) {
-                console.error('Error fetching data ', error);
-            }
+            apiClient.get("/api/category")
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error('Ошибка при получении категорий ', error);
+            })
 
         };
 
-        fetchData();
-
         const token = sessionStorage.getItem('accessToken');
 
-	if (token) {
+	    if (token) {
             setIsAuthenticated(true);
         } else {
             setIsAuthenticated(false);
         }
+
+        fetchData();
+
+        checkAuthenticated();
 
     }, [])
 
@@ -82,7 +86,7 @@ const Header = () => {
                 <input type='text' 
                 onChange={(e) => setSearchText(e.target.value)}
                 value={searchText}
-                placeholder='Search products...'
+                placeholder='Найти на Click and shop...'
                 className=' w-full flex-1 rounded-full text-gray-900
                 text-lg placeholder:text-base 
                 placeholder:tracking-wide shadow-sm
@@ -115,9 +119,9 @@ const Header = () => {
                         cursor-pointer'/>
                         <span className='inline-flex
                         items-center justify-center bg-redText
-                        text-whileText absolute -top-1
+                        text-whiteText absolute -top-1
                         -right-2 text-[9px] rounded-full w-4 h-4'>
-                            0
+                            {favoriteProduct?.length > 0 ? favoriteProduct?.length : "0"}
                         </span>
                     </Link>
                     <Link to={"/cart"} className='relative block'>
@@ -125,7 +129,7 @@ const Header = () => {
                         cursor-pointer'/>
                         <span className='inline-flex
                         items-center justify-center bg-redText
-                        text-whileText absolute -top-1
+                        text-whiteText absolute -top-1
                         -right-2 text-[9px] rounded-full w-4 h-4'>
                             {cartProduct?.length > 0 ? cartProduct?.length : "0"}
                         </span>

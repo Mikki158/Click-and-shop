@@ -76,57 +76,37 @@ const Profile = () => {
               Ваши устройства
             </div>
           </div>
+          
 
-          <div className='w-full'>
+          <div className="mb-4 w-full">
             {
               role.includes("Seller") ? (
                 <Link to={"/seller"}>
-<<<<<<< Updated upstream
-                  <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
+
+                  <div className="bg-white p-2 rounded shadow-sm mb-2 cursor-pointer hover:bg-gray-100">
                     На страницу продавца
-                  </h3>
+                  </div>
                 </Link>
               ) : (
                 <Link to={"/createSeller"}>
-                  <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
-                    Стать продовцов
-                  </h3>
-=======
-                  <div className="bg-white p-2 rounded shadow-sm cursor-pointer hover:bg-gray-100">
-                    На страницу продавца
-                  </div>
-                  {/* <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
-                    На страницу продавца
-                  </h3> */}
-                </Link>
-              ) : (
-                <Link to={"/createSeller"}>
-                  <div className="bg-white p-2 rounded shadow-sm cursor-pointer hover:bg-gray-100">
+                  <div className="bg-white p-2 rounded shadow-sm mb-2 cursor-pointer hover:bg-gray-100">
                     Стать продовцов
                   </div>
-                  {/* <h3 className='text-sm font-semibold text-gray-600 mb-2 cursor-pointer'>
-                    Стать продовцов
-                  </h3> */}
->>>>>>> Stashed changes
                 </Link>
               )
             }
-            
+            {
+              role.includes("Admin") && (
+                <Link to={"/admin"}>
+
+                  <div className="bg-white p-2 rounded shadow-sm mb-2 cursor-pointer hover:bg-gray-100">
+                    На страницу админа
+                  </div>
+                </Link>
+              )
+            }
           </div>
         </div>
-
-        {/* Правая панель */}
-        {/* <div className="flex-1 p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-gray-200 p-6 flex items-center justify-center rounded shadow-sm">
-                Избранное
-              </div>
-              <div className="bg-gray-200 p-6 flex items-center justify-center rounded shadow-sm">
-                Покупки
-              </div>
-              <div className="bg-gray-200 p-6 flex items-center justify-center rounded shadow-sm">
-                Ждут оценки
-              </div>
-            </div> */}
       </div>
     </Container>
   );

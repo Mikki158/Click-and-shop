@@ -17,10 +17,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
-<<<<<<< Updated upstream
-=======
     "firebase": "^11.3.1",
->>>>>>> Stashed changes
     "lodash": "^4.17.21",
     "merge": "^2.1.1",
     "react": "^18.3.1",

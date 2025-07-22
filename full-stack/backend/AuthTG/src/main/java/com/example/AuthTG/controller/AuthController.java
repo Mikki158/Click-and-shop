@@ -10,15 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-<<<<<<< Updated upstream
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-=======
 import java.util.*;
->>>>>>> Stashed changes
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -70,8 +62,35 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/TGBot_auth")
+    public ResponseEntity<TokensDto> tgBotAuth(
+            @RequestBody TGBotAuth tgBotAuth) {
+
+        Map<String, String> map = new HashMap<>();
+
+        map.put("id", tgBotAuth.getUserId());
+        map.put("first_name", tgBotAuth.getFirstName());
+        if (!tgBotAuth.getLastName().equals("null"))
+            map.put("last_name", tgBotAuth.getLastName());
+        map.put("username", tgBotAuth.getUsername());
+
+        TokensDto tokens = jwtService.createTokens(map);
+
+        jwtService.saveTGTokens(tokens, tgBotAuth.getUserId());
+
+        return new ResponseEntity<>(tokens, HttpStatus.ACCEPTED);
+    }
+
+//    @GetMapping("/getToken/{id}")
+//    public ResponseEntity<TokensDto> getToken(
+//            @PathVariable Long userId) {
+//
+//        return new ResponseEntity<>(jwtService.getToken(userId), HttpStatus.OK);
+//    }
+
     @PostMapping("/update_tokens")
-    public ResponseEntity<TokensDto> updateTokens(@RequestBody @Valid UpdateTokensIn reqest) {
+    public ResponseEntity<TokensDto> updateTokens(
+            @RequestBody @Valid UpdateTokensIn reqest) {
 
         TokensDto response = jwtService.updateTokens(reqest);
 
@@ -80,9 +99,12 @@ public class AuthController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity<Map<String, Object>> validateToken(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Map<String, Object>> validateToken(
+            @RequestHeader("X-User-Id") Long userId) {
 
-        User user = jwtService.validationAccessToken(authHeader);
+        //User user = jwtService.validationAccessToken(authHeader);
+
+        User user = authService.getUserById(userId);
 
         System.out.println("Валидация");
 
@@ -98,9 +120,12 @@ public class AuthController {
     }
 
     @GetMapping("/userInfo")
-    public ResponseEntity<UserDto> getUserInfo(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<UserDto> getUserInfo(
+            @RequestHeader("X-User-Id") Long userId) {
 
-        User user = jwtService.validationAccessToken(authHeader);
+        //User user = jwtService.validationAccessToken(authHeader);
+
+        User user = authService.getUserById(userId);
 
         Set<String> roles =  user.getRoles().stream()
                 .map(Role::getName)
@@ -113,7 +138,8 @@ public class AuthController {
     }
 
     @PostMapping("/addSeller")
-    public ResponseEntity<String> addSeller(@RequestParam("userId") String userId) {
+    public ResponseEntity<String> addSeller(
+            @RequestParam("userId") String userId) {
 
         String response = authService.addSeller(Long.parseLong(userId));
 
@@ -125,4 +151,23 @@ public class AuthController {
 
         return new ResponseEntity<>(authService.getAllUsers(), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUser(
+            @PathVariable("id") Long userId) {
+        
+        User user = authService.getUserById(userId);
+        UserDto response = new UserDto();
+        response.setUsername(user.getUsername());
+        response.setPhotoUrl(user.getPhotoUrl());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/admins")
+    public ResponseEntity<List<Long>> getAdmins() {
+
+        return new ResponseEntity<>(authService.getAdmins(), HttpStatus.OK);
+    }
+
 }

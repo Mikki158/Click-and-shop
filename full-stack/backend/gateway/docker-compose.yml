@@ -1,0 +1,24 @@
+version: '3.8'
+
+networks:
+  my_backend:
+    name: backend
+    external: true
+
+  my_frontend:
+    name: frontend
+    external: true
+
+services:
+  app:
+    container_name: gateway-container
+    build:
+      context: .
+    ports:
+      - "8085:8085"
+    networks:
+      - my_backend
+      - my_frontend
+
+volumes:
+  postgres_data:

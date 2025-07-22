@@ -12,14 +12,7 @@ import com.example.seller.repository.RequestRepository;
 import com.example.seller.service.SellerService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-<<<<<<< Updated upstream
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-=======
 import org.springframework.http.*;
->>>>>>> Stashed changes
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,12 +29,12 @@ public class SellerServiceImpl implements SellerService {
     private BrandMapper brandMapper;
 
     @Override
-    public UserDto verifyAuthentication(String authHeader) {
+    public UserDto verifyAuthentication(Long userId) {
 
-        String url = "https://click-and-shop.ru/api/auth/userInfo";
+        String url = "http://auth-container:8080/api/auth/userInfo";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
+        headers.set("X-User-Id", userId.toString());
 
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
@@ -74,26 +67,23 @@ public class SellerServiceImpl implements SellerService {
 
         CreateRequestSeller saveReuest = requestRepository.save(newRequest);
 
-<<<<<<< Updated upstream
-=======
-        String url = "https://click-and-shop.ru/bot/sellerRequest";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(saveReuest), headers);
-
-        //HttpEntity<String> entity = new HttpEntity<>("", headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                botRequest,
-                new ParameterizedTypeReference<>() {}
-        );
-
->>>>>>> Stashed changes
+//        String url = "https://click-and-shop.ru/bot/sellerRequest";
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(saveReuest), headers);
+//
+//        //HttpEntity<String> entity = new HttpEntity<>("", headers);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.exchange(
+//                url,
+//                HttpMethod.POST,
+//                botRequest,
+//                new ParameterizedTypeReference<>() {}
+//        );
+        
         return "Заявка №" + saveReuest.getId() + " отправлена, ожидайте проверки";
     }
 
@@ -128,7 +118,7 @@ public class SellerServiceImpl implements SellerService {
 
         requestRepository.deleteById(requestId);
 
-        String url = "https://click-and-shop.ru/api/auth/addSeller?userId=" + request.getUserId().toString();
+        String url = "http://auth-container:8080/api/auth/addSeller?userId=" + request.getUserId().toString();
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(
@@ -140,34 +130,27 @@ public class SellerServiceImpl implements SellerService {
 
         String result = response.getBody();
 
-<<<<<<< Updated upstream
-=======
+//        url = "https://click-and-shop.ru/bot/approveRequest?requestId=" + request.getId();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(request), headers);
+//
+//        //HttpEntity<String> entity = new HttpEntity<>("", headers);
+//
+//        restTemplate = new RestTemplate();
+//        restTemplate.exchange(
+//                url,
+//                HttpMethod.POST,
+//                botRequest,
+//                new ParameterizedTypeReference<UserDto>() {}
+//        );
 
-
-        url = "https://click-and-shop.ru/bot/approveRequest?requestId=" + request.getId();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(request), headers);
-
-        //HttpEntity<String> entity = new HttpEntity<>("", headers);
-
-        restTemplate = new RestTemplate();
-        restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                botRequest,
-                new ParameterizedTypeReference<UserDto>() {}
-        );
-
->>>>>>> Stashed changes
         return "Заявка была одобрена, " + result;
     }
 
     @Override
-<<<<<<< Updated upstream
-=======
     public String rejectRequest(Long requestId) {
 
         if (requestRepository.findById(requestId).isEmpty()) {
@@ -179,30 +162,29 @@ public class SellerServiceImpl implements SellerService {
         requestRepository.deleteById(requestId);
 
 
-        String url = "https://click-and-shop.ru/bot/rejectRequest?requestId=" + request.getId();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(request), headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(
-                url,
-                HttpMethod.DELETE,
-                botRequest,
-                new ParameterizedTypeReference<CreateRequestSellerDto>() {}
-        );
+//        String url = "https://click-and-shop.ru/bot/rejectRequest?requestId=" + request.getId();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        HttpEntity<RequestSellerDto> botRequest = new HttpEntity<>(requestMapper.toDto(request), headers);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.exchange(
+//                url,
+//                HttpMethod.DELETE,
+//                botRequest,
+//                new ParameterizedTypeReference<CreateRequestSellerDto>() {}
+//        );
 
 
         return "Заявка №" + requestId + " была удалена";
     }
 
     @Override
->>>>>>> Stashed changes
-    public List<BrandDto> getBrandList(UserDto user) {
+    public List<BrandDto> getBrandList(Long userId) {
 
-        List<Brand> brands = brandRepository.findBySellerId(user.getUserId());
+        List<Brand> brands = brandRepository.findBySellerId(userId);
         List<BrandDto> response = new ArrayList<>();
 
         for (Brand brand : brands) {
@@ -213,8 +195,6 @@ public class SellerServiceImpl implements SellerService {
 
         return response;
     }
-<<<<<<< Updated upstream
-=======
 
     @Override
     public BrandDto getBrand(Long brandId) {
@@ -228,5 +208,4 @@ public class SellerServiceImpl implements SellerService {
 
         return response;
     }
->>>>>>> Stashed changes
 }

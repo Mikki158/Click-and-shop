@@ -1,5 +1,6 @@
 import axios from "axios";
 import dayjs from "dayjs";
+import { authStore } from "./lib/auth";
 
 const onGetForceToken = async () => {
     try {
@@ -8,11 +9,8 @@ const onGetForceToken = async () => {
             .find((row) => row.startsWith('refreshToken='))
             ?.split('=')[1];
 
-<<<<<<< Updated upstream
-=======
         console.log("REFRESH " + refreshToken)
 
->>>>>>> Stashed changes
         if (!refreshToken) {
             console.error('Refresh token отсутствует.');
             return;
@@ -33,6 +31,7 @@ const onGetForceToken = async () => {
         console.log('Access token успешно обновлён.', accessToken, newRefreshToken)
     } catch (error) {
         console.error('Ошибка обновления access token:', error);
+        authStore.getState().setIsAuthenticated(false);
     }
 }
 
@@ -40,24 +39,35 @@ const apiClient = axios.create({
     baseURL: 'https://click-and-shop.ru',
     headers: {
         'Content-Type': 'application/json',
+        'X-Client-Type': 'frontend',
+        
     },
 });
 
 apiClient.interceptors.request.use(async (config) => {
 
+    //const {setIsAuthenticated} = useAuthStore();
+
     console.log("Проверка токена");
 
     const expireAt = sessionStorage.getItem('nbf');
 
-    if (dayjs(expireAt).diff(dayjs()) < 1) {
+    console.log("Время", expireAt);
+
+    if (dayjs(expireAt).diff(dayjs()) < 1 || expireAt == null) {
         console.log("Проверка не пройдена")
         await onGetForceToken();
         console.log("Токен обновился");
+        
     }
    
     const accessToken = sessionStorage.getItem('accessToken');
     console.log("Добавление заголовка", accessToken)
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    if (accessToken != null) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    //setIsAuthenticated(true);
 
     return config;
 },

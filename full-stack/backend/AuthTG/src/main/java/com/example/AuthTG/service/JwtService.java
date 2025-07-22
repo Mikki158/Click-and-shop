@@ -3,6 +3,7 @@ package com.example.AuthTG.service;
 import com.example.AuthTG.dto.TokensDto;
 import com.example.AuthTG.dto.UpdateTokensIn;
 import com.example.AuthTG.entity.User;
+import com.example.AuthTG.entity.UserTGTokens;
 
 import java.util.Map;
 
@@ -20,7 +21,13 @@ public interface JwtService {
 
     TokensDto auth(Map<String, String> map);
 
+    TokensDto createTokens(Map<String, String> map);
+
     Map<String, String> checkTelegramAuthorization(Map<String, String> map) throws Exception;
 
     TokensDto updateTokens(UpdateTokensIn reqest);
+
+    void saveTGTokens(TokensDto tokens, String userId);
+
+//    TokensDto getToken(Long userId);
 }

@@ -4,6 +4,8 @@ import { getData } from '../lib';
 import { config } from '../../config';
 import { ProductProps } from '../../type';
 import ProductCard from './ProductCard';
+import apiClient from '../apiClient';
+import Loading from './Loading'
 
 interface ItemsProps {
     currentItems:ProductProps[]
@@ -24,18 +26,34 @@ const Items = ({currentItems}:ItemsProps) => {
 const Pagination = () => {
 
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
     
     useEffect(() => {
         const fetchData = async() => {
-            const endpoint = `${config?.baseUrl}/api/product`;
-
             try {
-                const data = await getData(endpoint);
-                setProducts(data);
-                console.log(data);                
+                setLoading(true);
+                const response = await apiClient.get("/api/product")
                 
+                const productsResponse = response.data
+
+                const productDetails = await Promise.all(
+                    productsResponse.map(async (product: { id:string }) => {
+                        const categoryReposytory = await apiClient.get(`/api/category/${product?.categoryId}`)
+                        const brandResponse = await apiClient.get(`/api/seller/brand/${product?.brandId}`)
+
+                        return {
+                            ...product,
+                            brand: brandResponse.data.brandName
+                        }
+                    })
+                )
+                
+                setProducts(productDetails);
+                console.log(productDetails)
             } catch (error) {
-                console.error('Error fetching data ', error);
+                console.error("Ошибка при получении товаров: ", error)
+            } finally {
+                setLoading(false);
             }
 
         };
@@ -49,9 +67,11 @@ const Pagination = () => {
   //const currentItems = products.slice(itemOffset, endOffset);
 
   return (
-    <>
-        <Items currentItems={products} />
-    </>
+    <div>
+        {
+            loading ? <Loading/> : <Items currentItems={products} />
+        }
+    </div>
   )
 }
 

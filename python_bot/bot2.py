@@ -3,14 +3,13 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils import executor
 from aiohttp import web
 import asyncio
+import requests
 
-<<<<<<< Updated upstream
-=======
 from pyexpat.errors import messages
 
->>>>>>> Stashed changes
 # Telegram bot token
 BOT_TOKEN = "7879270677:AAF_BdUvUylE9XXY8MpTOk8lpiWZL3cMy24"
+BASE_URL = 'https://click-and-shop.ru/api'
 
 # Initialize bot and dispatcher
 bot = Bot(token=BOT_TOKEN)
@@ -48,12 +47,6 @@ async def handle_post(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
-<<<<<<< Updated upstream
-# Initialize web application
-app = web.Application()
-app.router.add_post("/bot/send_welcome", handle_post)
-=======
-
 async def sellerRequest(request):
     try:
         data = await request.json()
@@ -76,6 +69,10 @@ async def sellerRequest(request):
                 "Комментарий: " + str(comment) + "\n" +
                 "Заявка создана: " + str(created)
         )
+
+        response = await requests.get(f"{BASE_URL}/auth/admins", verify=False)
+        data = await response.json()
+        admins = data
 
         await bot.send_message("462074124", message)
         return web.json_response({"status": "success"})
@@ -136,7 +133,6 @@ app.router.add_post("/bot/send_welcome", handle_post)
 app.router.add_post("/bot/sellerRequest", sellerRequest)
 app.router.add_post("/bot/approveRequest", approveRequest)
 app.router.add_delete("/bot/rejectRequest", rejectRequest)
->>>>>>> Stashed changes
 
 if __name__ == "__main__":
     # Run the webhook server and the bot

@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom"
 import axios from 'axios'
+import { authStore } from "../lib/auth";
+import apiClient from '../apiClient';
 
 const Login = () => {
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();  
 
   useEffect(() => {
 
@@ -29,9 +31,10 @@ const Login = () => {
 
     console.log(params);
 
-    axios
-      .get('https://click-and-shop.ru/api/auth/TG_auth', {params})
-      .then((response) => {
+    const fetchData = async() => {
+      try {
+        const response = await apiClient.get('https://click-and-shop.ru/api/auth/TG_auth', {params})
+
         const { accessToken, refreshToken, nbf } = response.data;
 
         sessionStorage.setItem('nbf', nbf);
@@ -40,10 +43,24 @@ const Login = () => {
         document.cookie = `refreshToken=${refreshToken}; Secure`
 
         console.log('Авторизация прошла успешно, токены сохранены', accessToken, refreshToken)
-      })
-      .catch((error) => {
+
+        const userInfo = await apiClient.get('/api/auth/userInfo')
+        console.log("Роли", userInfo.data.role)
+
+        localStorage.setItem("roles", userInfo.data.role);
+
+        const timer = setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+
+        return () => clearTimeout(timer);
+      } catch(error) {
         console.error('Ошибка авторизации', error)
-      });
+      }
+    }
+
+    fetchData()
+
   }, [searchParams])
 
   return (

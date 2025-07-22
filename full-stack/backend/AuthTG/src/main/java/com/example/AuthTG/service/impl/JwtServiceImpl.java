@@ -5,8 +5,10 @@ import com.example.AuthTG.dto.TokensDto;
 import com.example.AuthTG.dto.UpdateTokensIn;
 import com.example.AuthTG.entity.Role;
 import com.example.AuthTG.entity.User;
+import com.example.AuthTG.entity.UserTGTokens;
 import com.example.AuthTG.repository.RoleRepository;
 import com.example.AuthTG.repository.TokenBlacklistRepository;
+import com.example.AuthTG.repository.UserTokensRepository;
 import com.example.AuthTG.service.AuthService;
 import com.example.AuthTG.service.JwtService;
 import io.jsonwebtoken.Claims;
@@ -42,6 +44,7 @@ public class JwtServiceImpl implements JwtService {
 
     TokenBlacklistRepository blacklistRepository;
     AuthService authService;
+    UserTokensRepository userTokensRepository;
 
     @Override
     public String generateAccessToken(User subject, Map<String, Object> payload) {
@@ -172,13 +175,19 @@ public class JwtServiceImpl implements JwtService {
         try {
             Map<String, String> data = checkTelegramAuthorization(map);
 
-            return issueTokensForUser(authService.auth(data));
+            return createTokens(data);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    @Override
+    public TokensDto createTokens(Map<String, String> data) {
+
+        return issueTokensForUser(authService.auth(data));
     }
 
     private TokensDto issueTokensForUser(User user) {
@@ -286,4 +295,32 @@ public class JwtServiceImpl implements JwtService {
 
         return tokens;
     }
+
+    @Override
+    public void saveTGTokens(TokensDto tokens, String userId) {
+
+        UserTGTokens userTGTokens = new UserTGTokens();
+
+        userTGTokens.setUserId(Long.parseLong(userId));
+        userTGTokens.setAccessToken(tokens.getAccessToken());
+        userTGTokens.setRefreshToken(tokens.getRefreshToken());
+
+        userTokensRepository.save(userTGTokens);
+    }
+
+//    @Override
+//    public TokensDto getToken(Long userId) {
+//
+//        Optional<UserTGTokens> existingTokens = userTokensRepository.findByUserId(userId);
+//
+//        if (existingTokens.isPresent()) {
+//            UserTGTokens userTGTokens = existingTokens.get();
+//
+//            TokensDto tokens = new TokensDto(
+//                    userTGTokens.getAccessToken(),
+//                    userTGTokens.getRefreshToken());
+//
+//            return tokens;
+//        }
+//    }
 }

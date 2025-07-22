@@ -9,9 +9,17 @@ import java.util.List;
 
 public interface ImageSercice {
 
-    String addImage(MultipartFile image, Long productId);
+    String addProductImage(MultipartFile image, Long productId);
 
-    String deleteImage(String filePath);
+    String addReviewImage(MultipartFile image, Long reviewId);
+
+    String deleteProductImage(String filePath);
+
+    String deleteReviewImage(String filePath);
+
+    void deleteImageFromReview(Long reviewId);
 
     List<String> getImageForProduct(Long productId);
+
+    List<String> getImageForReview(Long reviewId);
 }

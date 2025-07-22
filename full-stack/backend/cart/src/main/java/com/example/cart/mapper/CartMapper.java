@@ -1,7 +1,7 @@
 package com.example.cart.mapper;
 
-import com.example.cart.dto.CartDto;
-import com.example.cart.entity.Cart;
+import com.example.cart.dto.cart.CartDto;
+import com.example.cart.entity.cart.Cart;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,6 @@
 package com.example.product.service;
 
-import com.example.product.dto.BrandDto;
-import com.example.product.dto.ProductDto;
+import com.example.product.dto.*;
 import com.example.product.entity.Image;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,17 +8,35 @@ import java.util.List;
 
 public interface ProductService {
 
-    public ProductDto createProduct();
+    ProductDto createProduct();
 
-    public ProductDto updateProduct(Long productId, String name, Long regularPrice, Long discountedPrice, String description, Long categoryId, Long brandId);
+    ProductDto updateProduct(Long productId, String name, Long regularPrice, Long discountedPrice, String description, Long categoryId, Long brandId);
 
-    public ProductDto getProduct(Long productId);
+    ProductDto getProduct(Long productId);
 
-    public List<ProductDto> getAllProducts();
+    List<ProductDto> getAllProducts();
 
-    public String deleteProduct(Long productId);
+    String deleteProduct(Long productId);
 
-    List<BrandDto> getBrands(String authHeader);
+    List<BrandDto> getBrands(Long userId);
 
     List<ProductDto> getProductFromBrand(List<BrandDto> brands);
+
+    ReviewDto createReview(Long userId, CreateReviewDto createReviewDto);
+
+    List<ReviewDto> getReviewsFromProduct(Long productId);
+
+    List<ReviewDto> getReviews(Long userId);
+
+    List<ReviewDto> getCheckingReview();
+
+    List<ReviewDto> getApprovedReview();
+
+    List<Long> getNotReviewProducts(Long userId);
+
+    void deleteReview(Long reviewId);
+
+    ReviewDto getReview(Long reviewId);
+
+    void setStatusReview(Long reviewId, ReviewStatus status);
 }

@@ -10,7 +10,7 @@ const Loading = () => {
         ariaLabel="rotating-lines-loading"
       />
       <p className="text-white text-2xl font-bold tracking-widest">
-        Loading...
+        Загрузка...
       </p>
     </div>
   );

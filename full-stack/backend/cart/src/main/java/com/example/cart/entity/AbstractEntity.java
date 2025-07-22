@@ -21,7 +21,7 @@ public abstract class AbstractEntity implements Serializable {
     LocalDateTime updated;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }

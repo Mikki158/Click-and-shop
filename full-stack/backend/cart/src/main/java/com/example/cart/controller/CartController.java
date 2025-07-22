@@ -1,9 +1,9 @@
 package com.example.cart.controller;
 
-import com.example.cart.dto.CartDto;
-import com.example.cart.dto.CartProductDto;
+import com.example.cart.dto.cart.CartDto;
+import com.example.cart.dto.cart.CartProductDto;
 import com.example.cart.dto.UserDto;
-import com.example.cart.entity.CartProduct;
+import com.example.cart.service.AuthService;
 import com.example.cart.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,26 +18,27 @@ import java.util.List;
 public class CartController {
 
     CartService cartService;
+    AuthService authService;
 
     @GetMapping
     public ResponseEntity<List<CartProductDto>> getCartProducts(
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        UserDto user = cartService.verifyAuthentication(authHeader);
+        //UserDto user = authService.verifyAuthentication(authHeader);
 
-        List<CartProductDto> response = cartService.getProducts(user.getUserId());
+        List<CartProductDto> response = cartService.getProducts(userId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<String> addToCart(
-            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader("X-User-Id") Long userId,
             @RequestBody CartProductDto product) {
 
-        UserDto user = cartService.verifyAuthentication(authHeader);
+        //UserDto user = authService.verifyAuthentication(authHeader);
 
-        String response = cartService.addToCart(user.getUserId(), product);
+        String response = cartService.addToCart(userId, product);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -54,11 +55,11 @@ public class CartController {
     @PatchMapping("/{productId}/decrease")
     public ResponseEntity<String> decreaseQuantity(
             @PathVariable Long productId,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        UserDto user = cartService.verifyAuthentication(authHeader);
+        //UserDto user = authService.verifyAuthentication(authHeader);
 
-        String response = cartService.decreaseQuantity(user.getUserId(), productId);
+        String response = cartService.decreaseQuantity(userId, productId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -66,12 +67,23 @@ public class CartController {
     @DeleteMapping("/{productId}")
     public ResponseEntity<String> removeFromCart(
             @PathVariable Long productId,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        UserDto user = cartService.verifyAuthentication(authHeader);
+        //UserDto user = authService.verifyAuthentication(authHeader);
 
-        String response = cartService.removeFromCart(user.getUserId(), productId);
+        String response = cartService.removeFromCart(userId, productId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<Void> clearCart(
+            @RequestHeader("X-User-Id") Long userId) {
+
+        //UserDto user = authService.verifyAuthentication(authHeader);
+
+        cartService.clearCart(userId);
+
+        return ResponseEntity.ok().build();
     }
 }

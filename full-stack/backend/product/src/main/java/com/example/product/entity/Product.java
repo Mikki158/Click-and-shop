@@ -17,6 +17,8 @@ public class Product extends AbstractEntity{
     private Long discountedPrice;
     private String description;
     private Category category;
+    private float rating;
+    private int ratingCount;
     private List<String> imagePaths;
     private Long brandId;
 
@@ -57,5 +59,15 @@ public class Product extends AbstractEntity{
     @Column(name = "brandId")
     public Long getBrandId() {
         return brandId;
+    }
+
+    @Column(name = "rating")
+    public float getRating() {
+        return rating;
+    }
+
+    @Column(name = "rating_count")
+    public int getRatingCount() {
+        return ratingCount;
     }
 }

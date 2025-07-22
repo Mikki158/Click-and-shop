@@ -1,64 +1,24 @@
 import React, { useEffect, useState } from "react";
 import apiClient from '../../apiClient';
 import { useParams } from "react-router-dom";
-<<<<<<< Updated upstream
-import axios from "axios";
-=======
 import { BrandProps, CategoryProps } from "../../../type";
 import { toast } from 'react-toastify'
->>>>>>> Stashed changes
 
 const EditProduct: React.FC = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
 
-<<<<<<< Updated upstream
-    const [brands, setBrands] = useState([]);
-    const [brandId, setBrandId] = useState(null)
-    
-    const [categorys, setCategorys] = useState([])
-    const [categoryId, setCategoryId] = useState(null)
-=======
     const [brands, setBrands] = useState<BrandProps[]>([]);
     const [brandId, setBrandId] = useState('')
     
     const [categorys, setCategorys] = useState<CategoryProps[]>([])
     const [categoryId, setCategoryId] = useState('')
->>>>>>> Stashed changes
 
     const [name, setName] = useState("")
     const [regularPrice, setRegularPrice] = useState("")
     const [discountedPrice, setDiscountedPrice] = useState("")
     const [description, setDescription] = useState("")
-<<<<<<< Updated upstream
-    let productId = ""
 
-    const { id } = useParams();
-    const [product, setProduct] = useState(null);
-
-    const nameHandler = (event) => {
-        setName(event.target.value)
-    }
-
-    const regularPriceHandler = (event) => {
-        setRegularPrice(event.target.value)
-    }
-
-    const discountedPriceHandler = (event) => {
-        setDiscountedPrice(event.target.value)
-    }
-
-    const descriptionHandler = (event) => {
-        setDescription(event.target.value)
-    }
-
-    const fetchProductData = async (productId) => {
-        try {
-            const response = await apiClient.get(`/api/product/${productId}`)
-            setProduct(response.data)
-            console.log("Загруженный товар", response)
-            productId = response.data.id
-=======
     const [productId, setProductId] = useState("")
     //let productId = ""
 
@@ -86,7 +46,6 @@ const EditProduct: React.FC = () => {
             console.log("Загруженный товар", response)
             setProductId(response.data.id)
             //productId = response.data.id
->>>>>>> Stashed changes
             setName(response.data.name)
             setRegularPrice(response.data.regularPrice)
             setDiscountedPrice(response.data.discountedPrice)
@@ -95,12 +54,6 @@ const EditProduct: React.FC = () => {
             setCategoryId(response.data.categoryId)
 
             if (response.data && Array.isArray(response.data.imagePaths)) {
-<<<<<<< Updated upstream
-
-
-
-=======
->>>>>>> Stashed changes
                 setPreviews((prevPreviews) => [...prevPreviews, ...response.data.imagePaths])
             }
         } catch (error) {
@@ -130,28 +83,18 @@ const EditProduct: React.FC = () => {
         console.error("Ошибка при получении категорий ", error)
       })
 
-<<<<<<< Updated upstream
-      fetchProductData(id)
-    }, [id])
-
-    const handleChangeBrand = (event) => {
-=======
       if (id)
         fetchProductData(id)
     }, [id])
 
     const handleChangeBrand = (event : React.ChangeEvent<HTMLSelectElement>) => {
->>>>>>> Stashed changes
       const selectedBrandId = event.target.value;
       setBrandId(selectedBrandId);
       console.log("Выбран брэнд с id ", selectedBrandId);
     }
 
-<<<<<<< Updated upstream
-    const handleChangeCategory = (event) => {
-=======
+
     const handleChangeCategory = (event : React.ChangeEvent<HTMLSelectElement>) => {
->>>>>>> Stashed changes
       const selectCategoryId = event.target.value;
       setCategoryId(selectCategoryId);
       console.log("выбрана категория с id ", selectCategoryId)
@@ -175,24 +118,19 @@ const EditProduct: React.FC = () => {
     // Отправка файлов на backend
     const handleUpload = async () => {
         if (selectedFiles.length === 0) {
-<<<<<<< Updated upstream
-            alert("Пожалуйста, выберите файлы для загрузки.");
-            return;
-=======
             
-          toast.error('Фотографии не загружены', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            });
+          // toast.error('Фотографии не загружены', {
+          //   position: "top-right",
+          //   autoClose: 5000,
+          //   hideProgressBar: false,
+          //   closeOnClick: false,
+          //   pauseOnHover: true,
+          //   draggable: true,
+          //   progress: undefined,
+          //   theme: "light",
+          //   });
 
           return;
->>>>>>> Stashed changes
         }
 
         const formData = new FormData();
@@ -205,7 +143,7 @@ const EditProduct: React.FC = () => {
 
         console.log(formData)
 
-        await apiClient.post("/api/files/addPhoto", formData, {
+        await apiClient.post("/api/files/addProductImage", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -221,18 +159,13 @@ const EditProduct: React.FC = () => {
     };
 
     // Удаление выбранного файла
-<<<<<<< Updated upstream
-    const handleRemoveFile = (index: number) => {
-        setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-        setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
-=======
     const handleRemoveFile = (index: number, url : string) => {
       console.log("index" + index)
       setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
       setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
 
       const trimmedPath = url.replace("https://click-and-shop.ru/api/files/", "");
-      apiClient.delete("/api/files/deletePhoto/" + trimmedPath)
+      apiClient.delete("/api/files/deleteProductImage/" + trimmedPath)
       .then(() => {
         console.log("Фото было удалено")
         toast.success('Фото было удалено!');
@@ -240,7 +173,6 @@ const EditProduct: React.FC = () => {
       .catch((error) => {
         console.error("Ошибка при удалении фото: " + error)
       })
->>>>>>> Stashed changes
     };
 
     const saveProduct = async () => {
@@ -249,25 +181,8 @@ const EditProduct: React.FC = () => {
       console.log(discountedPrice)
       console.log(description)
 
-<<<<<<< Updated upstream
-      //let productId = ""
-
-    //   await apiClient.post("/api/product/createProduct")
-    //   .then((response) => {
-    //       //setProductId(response.data.id)
-    //       productId = response.data.id
-    //       console.log(response)
-    //   })
-    //   .catch((error) => {
-    //       console.error("Ошибка при создании товара ", error)
-    //   })
-
-      const data = {
-          "id": productId,
-=======
       const data = {
           "id": id,
->>>>>>> Stashed changes
           "name": name,
           "regularPrice": regularPrice,
           "discountedPrice": discountedPrice,
@@ -281,11 +196,6 @@ const EditProduct: React.FC = () => {
       await apiClient.put('/api/product/updateProduct', data)
       .then((response) => {
           console.log(response)
-<<<<<<< Updated upstream
-      })
-      .catch((error) => {
-          console.error("Ошибка при обновлении товара ", error)
-=======
 
           toast.success('Товар был успешно обновлен!', {
             position: "top-right",
@@ -311,7 +221,6 @@ const EditProduct: React.FC = () => {
             progress: undefined,
             theme: "light",
             });
->>>>>>> Stashed changes
       })
 
       handleUpload()
@@ -343,11 +252,7 @@ const EditProduct: React.FC = () => {
                         className="w-full h-32 object-cover rounded border"
                     />
                     <button
-<<<<<<< Updated upstream
-                        onClick={() => handleRemoveFile(index)}
-=======
                         onClick={() => handleRemoveFile(index, preview)}
->>>>>>> Stashed changes
                         className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
                     >
                         ✕
@@ -528,11 +433,7 @@ const EditProduct: React.FC = () => {
             <button 
                 className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                 onClick={saveProduct}>
-<<<<<<< Updated upstream
-              Создать и завершить
-=======
               Сохранить изменения
->>>>>>> Stashed changes
             </button>
           </div>
         </div>

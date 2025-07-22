@@ -5,10 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
 @RestController
@@ -25,7 +23,7 @@ public class FileController {
     ImageSercice imageSercice;
     private final String uploadDir = "/var/uploads/"; // Корневая папка
 
-    @PostMapping("/addPhoto")
+    @PostMapping("/addProductImage")
     public ResponseEntity<String> addImage(
             @RequestParam("files") List<MultipartFile> images,
             @RequestParam("productId") Long productId) {
@@ -33,33 +31,77 @@ public class FileController {
         String respone = "Файлы сохранены по пути: \n";
 
         for (MultipartFile file : images) {
-            respone += imageSercice.addImage(file, productId) + "\n";
+            respone += imageSercice.addProductImage(file, productId) + "\n";
         }
 
         return new ResponseEntity<>(respone, HttpStatus.OK);
-<<<<<<< Updated upstream
-=======
     }
 
-    @DeleteMapping("/deletePhoto/**")
-    public ResponseEntity<String> deleteImage(HttpServletRequest request) {
+    @PostMapping("/addReviewImage")
+    public ResponseEntity<String> addReviewImage(
+            @RequestParam("files") List<MultipartFile> images,
+            @RequestParam("reviewId") Long reviewId) {
+
+        String respone = "Файлы сохранены по пути: \n";
+
+        for (MultipartFile file : images) {
+            respone += imageSercice.addReviewImage(file, reviewId) + "\n";
+        }
+
+        return new ResponseEntity<>(respone, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteProductImage/**")
+    public ResponseEntity<String> deleteProductImage(HttpServletRequest request) {
         try {
             String requestPath = request.getRequestURI();
-            String relativePath = requestPath.substring("/api/files/deletePhoto/".length());
+            String relativePath = requestPath.substring("/api/files/deleteProductImage/".length());
             String deletePath = "/var/uploads/" + relativePath;
 
-            String response = imageSercice.deleteImage(deletePath);
+            String response = imageSercice.deleteProductImage(deletePath);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
->>>>>>> Stashed changes
+    }
+
+    @DeleteMapping("/review/{id}")
+    public ResponseEntity<Void> deleteImageFromReview(
+            @PathVariable("id") Long reviewId) {
+
+        imageSercice.deleteImageFromReview(reviewId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delteReviewImage/**")
+    public ResponseEntity<String> deleteReviewImage(HttpServletRequest request) {
+        try {
+            String requestPath = request.getRequestURI();
+            String relativePath = requestPath.substring("/api/files/delteReviewImage/".length());
+            String deletePath = "/var/uploads/" + relativePath;
+
+            String response = imageSercice.deleteReviewImage(deletePath);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<List<String>> getImageForProduct(@PathVariable("id") Long productId) {
+    public ResponseEntity<List<String>> getImageForProduct(
+            @PathVariable("id") Long productId) {
         List<String> urlList = imageSercice.getImageForProduct(productId);
+        return new ResponseEntity<>(urlList, HttpStatus.OK);
+    }
+
+    @GetMapping("/review/{id}")
+    public ResponseEntity<List<String>> getImageForReview(
+            @PathVariable("id") Long reviewId) {
+
+        List<String> urlList = imageSercice.getImageForReview(reviewId);
         return new ResponseEntity<>(urlList, HttpStatus.OK);
     }
 
@@ -86,6 +128,7 @@ public class FileController {
 
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(contentType))
+                        .cacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic().immutable())
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filePath.getFileName() + "\"")
                         .body(resource);
             } else {

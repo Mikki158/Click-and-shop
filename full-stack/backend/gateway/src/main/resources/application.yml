@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://auth-container:8080/
+          predicates:
+            - Path=/api/auth/**
+
+        - id: product-service
+          uri: http://product-container:8081/
+          predicates:
+            - Path=/api/product/**, /api/warehouse/**, /api/supply/**, /api/category/**, /api/pickup_point/**
+#
+#        - id: image-service
+#          uri: http://image-container:8082/
+#          predicates:
+#            - Path=/api/files/**
+
+        - id: seller-service
+          uri: http://seller-container:8083/
+          predicates:
+            - Path=/api/seller/**
+
+        - id: cart-service
+          uri: http://cart-container:8084/
+          predicates:
+            - Path=/api/cart/**, /api/favorite/**, /api/order/**, /api/completeOrder/**
+
+jwt:
+  secret: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
+
+bot:
+  secret-key: 12345qwerty
+
+server:
+  port: 8085
+
+logging:
+  level:
+    org.springframework.web: DEBUG

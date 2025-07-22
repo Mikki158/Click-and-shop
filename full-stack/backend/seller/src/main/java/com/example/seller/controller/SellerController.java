@@ -23,9 +23,9 @@ public class SellerController {
     @PostMapping("/createRequestSeller")
     public ResponseEntity<String> createRequestSeller(
             @RequestBody CreateRequestSellerDto request,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        UserDto userInfo = sellerService.verifyAuthentication(authHeader);
+        UserDto userInfo = sellerService.verifyAuthentication(userId);
 
         String response = sellerService.createRequestSeller(request, userInfo);
 
@@ -44,29 +44,23 @@ public class SellerController {
         return new ResponseEntity<>(sellerService.approveRequest(requestId), HttpStatus.OK);
     }
 
-<<<<<<< Updated upstream
-=======
     @DeleteMapping("/rejectRequest")
     public ResponseEntity<String> rejectRequest(@RequestParam("requestId") Long requestId) {
 
         return new ResponseEntity<>(sellerService.rejectRequest(requestId), HttpStatus.OK);
     }
 
->>>>>>> Stashed changes
     @GetMapping("/brandList")
     public ResponseEntity<List<BrandDto>> getBrandList(
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        UserDto userInfo = sellerService.verifyAuthentication(authHeader);
+        //UserDto userInfo = sellerService.verifyAuthentication(userId);
 
-        List<BrandDto> response = sellerService.getBrandList(userInfo);
+        List<BrandDto> response = sellerService.getBrandList(userId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-<<<<<<< Updated upstream
-
-=======
     @GetMapping("/brand/{id}")
     public ResponseEntity<BrandDto> getBrand(@PathVariable("id") Long brandId) {
 
@@ -74,5 +68,4 @@ public class SellerController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
->>>>>>> Stashed changes
 }

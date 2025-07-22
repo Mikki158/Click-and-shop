@@ -18,7 +18,7 @@ const AddToCartBtn = ({
   showPrice?: boolean;
 }) => {
   const [existingProduct, setExistingProduct] = useState<ProductProps | null>(null);
-  const { addToCart, cartProduct, decreaseQuantity } = store();
+  const { currentUser, addToCart, cartProduct, decreaseQuantity } = store();
 
   useEffect(() => {
     const availableItem = cartProduct.find(
@@ -38,6 +38,10 @@ const AddToCartBtn = ({
     console.log("Добавление товара")
     console.log(product)
     if (product) {
+      if (!currentUser) {
+        toast.error("Вы не авторизованы")
+        return
+      }
       addToCart(product);
       toast.success(`${product?.name.substring(0, 10)} added successfully!`);
     } else {
